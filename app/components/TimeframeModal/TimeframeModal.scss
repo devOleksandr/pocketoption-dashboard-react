@@ -1,0 +1,76 @@
+.timeframe-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9998;
+}
+
+.timeframe-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1a2e;
+    border: 1px solid #2d2d44;
+    border-radius: 12px;
+    padding: 20px 32px;
+    max-width: 500px;
+    width: 90%;
+    z-index: 9999;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+
+    // Preset Buttons
+    &__presets {
+        display: flex;
+        gap: 6px;
+        flex-wrap: nowrap;
+        justify-content: center;
+    }
+
+    .preset-btn {
+        width: 44px;
+        height: 29px;
+        padding: 0;
+        background: #2d2d44;
+        border: 1px solid #3d3d54;
+        border-radius: 4px;
+        color: #8b8b9a;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            background: #3d3d54;
+            border-color: #4d4d64;
+            color: #f8f8fb;
+        }
+
+        &--active {
+            background: #1a4a6b;
+            border-color: #009af9;
+            color: #f8f8fb;
+            border-width: 2px;
+        }
+    }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+    .timeframe-modal {
+        padding: 16px;
+        width: calc(100% - 32px);
+        transform: translate(-50%, 78%);
+
+        .preset-btn {
+            width: 40px;
+            height: 26px;
+            font-size: 11px;
+        }
+    }
+}

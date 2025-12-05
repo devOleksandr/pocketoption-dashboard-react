@@ -1,0 +1,698 @@
+@use './reset.css';
+@use './_config.scss' as *;
+@use './_mixins.scss' as *;
+@use './_typography.scss' as *;
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip !important; // Strongest clamp for iOS
+  width: 100vw !important;
+  max-width: 100vw !important;
+  touch-action: pan-y; // Disable horizontal panning, allow vertical
+  overscroll-behavior-x: none; // Stop horizontal overscroll bounce
+}
+
+// CSS Custom Properties (Pocket Land Design Tokens)
+:root {
+  // Background Colors
+  --pl-bg-primary: #{$bg-primary};
+  --pl-bg-secondary: #{$bg-secondary};
+  --pl-bg-tertiary: #{$bg-tertiary};
+  
+  // Text Colors
+  --pl-text-primary: #{$text-primary};
+  --pl-text-secondary: #{$text-secondary};
+  --pl-text-muted: #{$text-muted};
+  --pl-text-fog: #{$text-fog};
+  
+  // Accent Colors
+  --pl-accent-cyan: #{$accent-cyan};
+  --pl-accent-mint: #{$accent-mint};
+  --pl-accent-sapphire: #{$accent-sapphire};
+  --pl-accent-neon-green: #{$accent-neon-green};
+  --pl-accent-gold: #{$accent-gold};
+  
+  // Glass Effects
+  --pl-glass-bg: #{$glass-bg};
+  --pl-glass-border: #{$glass-border};
+  --pl-wave-overlay: #{$wave-overlay};
+  
+  // Node States
+  --pl-node-active: #{$node-active};
+  --pl-node-locked: #{$node-locked};
+  
+  // Status Colors
+  --pl-status-error: #{$status-error};
+  --pl-status-warning: #{$status-warning};
+  --pl-status-success: #{$status-success};
+  --pl-status-info: #{$status-info};
+  
+  // Effects
+  --pl-shadow-glow: #{$gradient-glow};
+  
+  // Border Radius
+  --radius: 1.25rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+body {
+  // Mobile-first body typography
+  font-size: 16px;
+  line-height: 1.5;
+  @include font-family;
+  font-weight: 400;
+  color: $text-primary;
+  background-color: $bg-primary;
+  
+  // Prevent horizontal scroll on mobile
+  overflow-x: clip !important;
+  width: 100vw !important;
+  max-width: 100vw !important; // Ensure body doesn't exceed viewport width
+  touch-action: pan-y; // Disable horizontal panning gestures
+  overscroll-behavior-x: none; // Disable horizontal overscroll chaining
+  
+  // Better text rendering on mobile
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+
+  @include media-up(mobile-m) {
+    font-size: 17px;
+  }
+  
+  @include media-up(tablet) {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  &.hide{
+    @include media(sm){
+      overflow: hidden;
+    }
+  }
+}
+
+main {
+  padding-bottom: 80px;
+  overflow-x: hidden;
+  width: 100vw;
+  max-width: 100vw;
+  touch-action: pan-y;
+
+  // Reduced padding for pages without bottom navigation
+  &.no-bottom-nav {
+    padding-bottom: 0;
+  }
+}
+
+section {
+  // Mobile-first section spacing
+  padding: $spacing-lg 0;
+  margin: 0;
+  
+  @include media-up(mobile-m) {
+    padding: $spacing-xl 0;
+  }
+  
+  @include media-up(tablet) {
+    padding: 60px 0;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  // Всі основні декларації разом
+  color: $text-primary;
+  line-height: 1.2;
+  font-weight: 500;
+
+  // Всі вкладені правила в кінці
+  @include media(xs) {
+    word-wrap: break-word;
+  }
+
+  span {
+    // Всі декларації для span разом
+    background: $gradient-cyan-mint;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    // Медіа-запити в кінці
+    @include media(xs) {
+      word-wrap: break-word;
+    }
+  }
+}
+
+h1 {
+  @include heading-1;
+}
+
+h2 {
+  @include heading-2;
+}
+
+h3 {
+  @include heading-3;
+}
+
+h4 {
+  @include heading-3;
+}
+
+h5 {
+  @include heading-3;
+}
+
+h6 {
+  @include heading-3;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+small, .small {
+  font-size: 0.875em;
+}
+
+// Mobile-First Utility Classes
+.mobile-container {
+  @include container;
+}
+
+.touch-target {
+  @include touch-target;
+}
+
+.mobile-text {
+  @include mobile-text;
+}
+
+// Spacing utilities (mobile-first)
+.p-xs { padding: $spacing-xs; }
+.p-sm { padding: $spacing-sm; }
+.p-md { padding: $spacing-md; }
+.p-lg { padding: $spacing-lg; }
+.p-xl { padding: $spacing-xl; }
+
+.m-xs { margin: $spacing-xs; }
+.m-sm { margin: $spacing-sm; }
+.m-md { margin: $spacing-md; }
+.m-lg { margin: $spacing-lg; }
+.m-xl { margin: $spacing-xl; }
+
+// Mobile-specific utilities
+.mobile-only {
+  @include media-up(tablet) {
+    display: none !important;
+  }
+}
+
+.desktop-only {
+  display: none !important;
+  
+  @include media-up(tablet) {
+    display: block !important;
+  }
+}
+
+// Safe area utilities for iOS
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+// Telegram WebApp specific styles
+body {
+  // Prevent zoom on input focus
+  input, textarea, select {
+    font-size: 16px;
+  }
+}
+
+// Telegram WebApp container
+.telegram-webapp {
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+}
+
+// Header responsive fixes
+.site-header {
+  width: 100%;
+  overflow-x: hidden !important; // Полностью убираем горизонтальный скролл
+  overflow-y: hidden !important; // Убираем вертикальный скролл
+  max-width: 100vw;
+  box-sizing: border-box;
+  border: none !important; // Убираем все границы
+  outline: none !important; // Убираем outline
+  box-shadow: none !important; // Убираем тени
+  white-space: nowrap; // Предотвращаем перенос текста
+}
+
+// Desktop header - default display, hide on mobile
+.site-header--desktop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+// Mobile header - hidden by default, show only on mobile
+.site-header--mobile {
+  display: none !important;
+  border: none !important; // Убираем все границы
+  outline: none !important; // Убираем outline
+  box-shadow: none !important; // Убираем тени
+  
+  @media (max-width: 768px) {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    gap: 8px;
+    background: #1c202e;
+    border: none !important; // Убираем все границы
+    outline: none !important; // Убираем outline
+    box-shadow: none !important; // Убираем тени
+    overflow-x: hidden !important; // Полностью убираем горизонтальный скролл
+    overflow-y: hidden !important; // Убираем вертикальный скролл
+    white-space: nowrap; // Предотвращаем перенос текста
+    touch-action: pan-y; // Блокируем горизонтальные жесты
+    overscroll-behavior-x: none; // Убираем резинку по оси X
+    width: 100vw;
+    
+    .mobile-header__left {
+      flex-shrink: 0;
+      border: none !important; // Убираем все границы
+      outline: none !important; // Убираем outline
+      box-shadow: none !important; // Убираем тени
+      overflow: hidden !important; // Убираем скролл
+      
+      .header-avatar {
+        border: none !important; // Убираем все границы
+        outline: none !important; // Убираем outline
+        box-shadow: none !important; // Убираем тени
+        overflow: hidden !important; // Убираем скролл
+        .header-avatar__l {
+          .user-avatar {
+            --user-avatar-size: 32px !important;
+            
+            .user-avatar__img-wrap {
+              width: 32px;
+              height: 32px;
+              
+              .user-avatar__img {
+                width: 32px;
+                height: 32px;
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    .mobile-header__center {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      
+      .gift-icon-btn {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #1a4dde 0%, #0099fa 100%);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(26, 77, 222, 0.3);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(26, 77, 222, 0.4);
+        }
+        
+        img {
+          width: 24px;
+          height: 24px;
+        }
+      }
+      
+      .demo-balance {
+        background: #1c202e;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+        
+        .demo-balance__content {
+          flex: 1;
+          min-width: 0;
+          
+          .demo-balance__top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2px;
+            
+            .demo-balance__account {
+              font-size: 11px;
+              color: rgba(255, 255, 255, 0.7);
+              font-weight: 500;
+            }
+            .demo-balance__currency {
+              font-size: 11px;
+              color: rgba(255, 255, 255, 0.5);
+              font-weight: 400;
+            }
+          }
+          .demo-balance__bottom {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            
+            .demo-balance__amount {
+              font-size: 14px;
+              font-weight: 600;
+              color: #fff;
+              white-space: nowrap;
+            }
+            
+            .demo-balance__dropdown-icon {
+              flex-shrink: 0;
+              width: 8px;
+              height: 6px;
+            }
+          }
+        }
+        .demo-balance__refresh {
+          width: 24px;
+          height: 24px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background-color 0.2s ease;
+          
+          svg {
+            width: 12px;
+            height: 12px;
+            color: rgba(255, 255, 255, 0.8);
+          }
+          
+          &:hover {
+            background: rgba(255, 255, 255, 0.2);
+          }
+        }
+      }
+    }
+    
+    .mobile-header__right {
+      flex-shrink: 0;
+      
+      .deposit-btn {
+        background: #074f40;
+        border: 1px solid #047838;
+        border-radius: 8px;
+        width: 42px;
+        height: 40px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        box-shadow: 0 2px 8px rgba(5, 122, 56, 0.2);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+          border-radius: 7px;
+          content: " ";
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+          pointer-events: none;
+        }
+        
+        &::after {
+          border-radius: 7px;
+          content: " ";
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          background: linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
+          pointer-events: none;
+        }
+        
+        &:hover {
+          background: #0a5f4a;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(5, 122, 56, 0.3);
+          text-decoration: none;
+        }
+        
+        .deposit-btn__icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+          width: 100%;
+          height: 100%;
+          
+          svg {
+            width: 20px;
+            height: 18px;
+            color: #5aa86b;
+          }
+        }
+        
+        .deposit-btn__text {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+// Global styles - using original CSS files
+// Most styles are handled by the original CSS files
+// Only essential overrides here if needed
+
+// Telegram theme integration
+.tg-bg { background-color: $tg-bg; }
+.tg-text { color: $tg-text; }
+.tg-hint { color: $tg-hint; }
+.tg-link { color: $tg-link; }
+.tg-button { background-color: $tg-button; color: $tg-button-text; }
+.tg-secondary-bg { background-color: $tg-secondary-bg; }
+
+// Pocket Land Utility Classes
+// Background Colors
+.bg-pl-primary { background-color: $bg-primary; }
+.bg-pl-secondary { background-color: $bg-secondary; }
+.bg-pl-tertiary { background-color: $bg-tertiary; }
+.bg-pl-glass { background-color: $glass-bg; }
+
+// Glass Effects
+.border-pl-glass { border-color: $glass-border; }
+.bg-pl-wave { background-color: $wave-overlay; }
+
+// Text Colors
+.text-pl-primary { color: $text-primary; }
+.text-pl-secondary { color: $text-secondary; }
+.text-pl-muted { color: $text-muted; }
+.text-pl-fog { color: $text-fog; }
+
+// Accent Colors - Background
+.bg-pl-cyan { background-color: $accent-cyan; }
+.bg-pl-mint { background-color: $accent-mint; }
+.bg-pl-sapphire { background-color: $accent-sapphire; }
+.bg-pl-neon-green { background-color: $accent-neon-green; }
+.bg-pl-gold { background-color: $accent-gold; }
+
+// Accent Colors - Text
+.text-pl-cyan { color: $accent-cyan; }
+.text-pl-mint { color: $accent-mint; }
+.text-pl-sapphire { color: $accent-sapphire; }
+.text-pl-neon-green { color: $accent-neon-green; }
+.text-pl-gold { color: $accent-gold; }
+
+// Accent Colors - Border
+.border-pl-cyan { border-color: $accent-cyan; }
+.border-pl-mint { border-color: $accent-mint; }
+.border-pl-node-active { border-color: $node-active; }
+.border-pl-node-locked { border-color: $node-locked; }
+
+// Status Colors
+.bg-pl-error { background-color: $status-error; }
+.bg-pl-warning { background-color: $status-warning; }
+.bg-pl-success { background-color: $status-success; }
+.bg-pl-info { background-color: $status-info; }
+
+.text-pl-error { color: $status-error; }
+.text-pl-warning { color: $status-warning; }
+.text-pl-success { color: $status-success; }
+.text-pl-info { color: $status-info; }
+
+// Gradients
+.bg-gradient-cyan-mint { background: $gradient-cyan-mint; }
+.bg-gradient-primary { background: $gradient-primary; }
+.bg-gradient-glass { background: $gradient-glass; }
+
+// Shadow Effects
+.shadow-pl-glow { box-shadow: $gradient-glow; }
+
+// Custom Animations (Pocket Land)
+@keyframes cyberpunk-glow {
+  0%, 100% { 
+    box-shadow: 0 0 8px rgba(43, 210, 255, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 16px rgba(43, 210, 255, 0.6), 0 0 24px rgba(17, 229, 180, 0.3);
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.animate-cyberpunk-glow {
+  animation: cyberpunk-glow 3s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 3s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+// Sidebar styles
+.left-sidebar,
+.right-sidebar {
+  width: 360px;
+  height: calc(100vh - 60px);
+  background: #2A2A2E;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+
+  &.show-text {
+    width: 360px;
+  }
+
+  &:not(.show-text) {
+    width: 60px;
+  }
+}
+
+.right-sidebar {
+  border-right: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// Trading page layout
+.wrapper__bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: calc(100vh - 60px);
+  overflow-x: hidden; // Prevent horizontal scroll
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    overflow-x: hidden; // Prevent horizontal scroll on mobile
+    max-width: 100vw; // Ensure it doesn't exceed viewport width
+  }
+}
+
+// Root wrappers - clamp horizontal overflow on iOS
+.wrapper,
+.wrapper__top {
+  overflow-x: hidden;
+  width: 100vw;
+  max-width: 100vw;
+  position: relative;
+  touch-action: pan-y;
+  overscroll-behavior-x: none;
+}
+
+// Clamp horizontal pan in trading panel zone
+.chart-panel,
+.chart-panel__input,
+.chart-panel__btn {
+  touch-action: pan-y;
+  overscroll-behavior-x: none;
+}
+
+.site-content {
+  flex: 1;
+  min-width: 0; // Allow flex item to shrink
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+.site-content-in {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex: 1;
+  overflow-x: hidden;
+  max-width: 100vw;
+}

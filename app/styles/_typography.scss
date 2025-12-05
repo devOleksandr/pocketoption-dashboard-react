@@ -1,0 +1,82 @@
+@use './_config.scss' as *;
+@use './_mixins.scss' as *;
+
+// Font family mixin
+@mixin font-family {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+// Mobile-First Typography Mixins
+@mixin typography($type) {
+  @include font-family;
+  @include mobile-text;
+  
+  @if $type == 'heading-1' {
+    // Mobile-first: start with mobile size
+    & {
+      font-size: 24px;
+      font-weight: 700; // Bold
+      line-height: 1.3; // Better for mobile
+    }
+    
+    // Scale up for larger screens
+    @include media-up(mobile-m) {
+      font-size: 28px;
+    }
+    
+    @include media-up(mobile-l) {
+      font-size: 32px;
+    }
+    
+    @include media-up(tablet) {
+      font-size: 42px;
+      line-height: 1.4;
+    }
+  }
+  
+  @if $type == 'heading-2' {
+    // Mobile-first: start with mobile size
+    & {
+      font-size: 20px;
+      font-weight: 600; // Semi-bold for mobile
+      line-height: 1.3;
+    }
+    
+    @include media-up(mobile-m) {
+      font-size: 22px;
+    }
+    
+    @include media-up(mobile-l) {
+      font-size: 24px;
+    }
+    
+    @include media-up(tablet) {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+  }
+  
+  @if $type == 'heading-3' {
+    & {
+      font-size: 18px;
+      font-weight: 600; // Semi-bold for mobile
+      line-height: 1.3;
+    }
+    
+    @include media-up(mobile-m) {
+      font-size: 20px;
+    }
+    
+    @include media-up(tablet) {
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+  }
+}
+
+// Utility mixins for headings only
+@mixin heading-1 { @include typography('heading-1'); }
+@mixin heading-2 { @include typography('heading-2'); }
+@mixin heading-3 { @include typography('heading-3'); }

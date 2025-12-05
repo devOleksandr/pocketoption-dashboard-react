@@ -1,0 +1,123 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    pointer-events: auto;
+}
+
+.modalContent {
+    position: relative;
+    max-width: 420px;
+    width: 90%;
+    background: #191c30;
+    border: 1px solid #2d2d44;
+    border-radius: 16px;
+    padding: 140px 24px 24px; // top padding to place text below the image
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    overflow: visible; // allow gift image to overflow without cropping
+}
+
+.boxWrapper {
+    position: absolute;
+    top: -58px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.boxImage {
+    width: 300px;
+    height: auto;
+    transform: rotate(25deg);
+    display: block;
+}
+
+.bonusBadge {
+    position: absolute;
+    top: -20px;
+    left: -30px;
+    width: 120px;
+    height: auto;
+    transform: rotate(-15deg);
+    z-index: 11;
+}
+
+.contentMain {
+    margin-bottom: 16px;
+}
+
+.title {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 12px 0;
+    text-align: left;
+}
+
+.mainInner {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.info {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700; // match header density style
+    margin: 0 0 4px 0;
+}
+
+.promoCodeContainer {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #222636;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    width: auto;            // prevent full width
+    max-width: max-content; // keep to content width
+    align-self: flex-start; // don't stretch in flex container
+}
+
+.promoCode {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.bonusText {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600; // closer to header weight but secondary
+    margin: 4px 0 0 0;
+}
+
+.registerButton {
+    background: #315BF0;
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 16px;
+    transition: background 0.2s ease;
+
+    &:hover {
+        background: #1e42c7;
+    }
+}
+

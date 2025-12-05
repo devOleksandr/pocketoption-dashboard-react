@@ -1,0 +1,731 @@
+@use './_config.scss' as *;
+@use 'sass:map';
+@use 'sass:math';
+
+// ============================================================================
+// RESPONSIVE MIXINS
+// ============================================================================
+
+// Mobile-First Media Query (min-width) - Primary responsive mixin
+@mixin media-up($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (min-width: #{map.get($breakpoints, $breakpoint)}) {
+      @content;
+    }
+  } @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}
+
+// Max-width media query (for legacy support)
+@mixin media-down($breakpoint) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (max-width: #{map.get($breakpoints, $breakpoint) - 1px}) {
+      @content;
+    }
+  } @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Please make sure it is defined in `$breakpoints` map.";
+  }
+}
+
+// Legacy max-width media query (for existing code)
+@mixin media($breakpoint) {
+  @include media-down($breakpoint) {
+    @content;
+  }
+}
+
+// Legacy min-width media query (for existing code)
+@mixin media_min($breakpoint) {
+  @include media-up($breakpoint) {
+    @content;
+  }
+}
+
+// Range media query (between two breakpoints)
+@mixin media-between($min-breakpoint, $max-breakpoint) {
+  @if map.has-key($breakpoints, $min-breakpoint) and map.has-key($breakpoints, $max-breakpoint) {
+    @media (min-width: #{map.get($breakpoints, $min-breakpoint)}) and (max-width: #{map.get($breakpoints, $max-breakpoint) - 1px}) {
+      @content;
+    }
+  } @else {
+    @warn "Please make sure both breakpoints are defined in `$breakpoints` map.";
+  }
+}
+
+// Legacy range media query (for existing code)
+@mixin media_range($breakpoint, $breakpoint2) {
+  @include media-between($breakpoint, $breakpoint2) {
+    @content;
+  }
+}
+
+// Container queries (modern responsive design)
+@mixin container-up($size) {
+  @container (min-width: #{$size}) {
+    @content;
+  }
+}
+
+// Orientation-based media queries
+@mixin landscape {
+  @media (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin portrait {
+  @media (orientation: portrait) {
+    @content;
+  }
+}
+
+// High DPI / Retina displays
+@mixin retina {
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    @content;
+  }
+}
+
+// Reduced motion preference
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// Dark mode preference
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+// Light mode preference
+@mixin light-mode {
+  @media (prefers-color-scheme: light) {
+    @content;
+  }
+}
+
+// ============================================================================
+// LAYOUT MIXINS
+// ============================================================================
+
+// Mobile-First Container (Telegram Mini App)
+@mixin container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+  
+  @include media-up(mobile-m) {
+    padding: 0 $spacing-lg;
+  }
+  
+  @include media-up(tablet) {
+    max-width: 1200px;
+    padding: 0 $spacing-xl;
+  }
+}
+
+// Flexbox mixins
+@mixin flex($direction: row, $justify: flex-start, $align: stretch, $wrap: nowrap) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+}
+
+@mixin flex-center {
+  @include flex(row, center, center);
+}
+
+@mixin flex-between {
+  @include flex(row, space-between, center);
+}
+
+@mixin flex-around {
+  @include flex(row, space-around, center);
+}
+
+@mixin flex-column {
+  @include flex(column, flex-start, stretch);
+}
+
+@mixin flex-column-center {
+  @include flex(column, center, center);
+}
+
+// CSS Grid mixins
+@mixin grid($columns: 1fr, $rows: auto, $gap: $spacing-md) {
+  display: grid;
+  grid-template-columns: $columns;
+  grid-template-rows: $rows;
+  gap: $gap;
+}
+
+@mixin grid-center {
+  @include grid;
+  place-items: center;
+}
+
+// Responsive grid
+@mixin responsive-grid($mobile-cols: 1, $tablet-cols: 2, $desktop-cols: 3, $gap: $spacing-md) {
+  @include grid(repeat($mobile-cols, 1fr), auto, $gap);
+  
+  @include media-up(mobile-l) {
+    grid-template-columns: repeat($tablet-cols, 1fr);
+  }
+  
+  @include media-up(tablet) {
+    grid-template-columns: repeat($desktop-cols, 1fr);
+  }
+}
+
+// Position mixins
+@mixin absolute($top: null, $right: null, $bottom: null, $left: null) {
+  position: absolute;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin fixed($top: null, $right: null, $bottom: null, $left: null) {
+  position: fixed;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+
+@mixin center-absolute {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin center-fixed {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// ============================================================================
+// INTERACTIVE ELEMENTS
+// ============================================================================
+
+  // Touch-friendly button mixin
+@mixin touch-target($size: $touch-target-min) {
+  min-height: $size;
+  min-width: $size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  
+  // Comfortable touch target for important buttons
+  &.comfortable {
+    min-height: $touch-target-comfortable;
+    min-width: $touch-target-comfortable;
+  }
+  
+  // Better touch feedback
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  @include reduced-motion {
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// Button variants
+@mixin button-base {
+  @include touch-target;
+  border: none;
+  border-radius: $border-radius-md;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  outline: none;
+  
+  &:focus-visible {
+    outline: 2px solid $accent-cyan;
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background: $gradient-cyan-mint;
+  color: $white;
+  
+  &:hover:not(:disabled) {
+    box-shadow: $gradient-glow;
+    transform: translateY(-1px);
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background: $bg-secondary;
+  color: $text-primary;
+  border: 1px solid $glass-border;
+  
+  &:hover:not(:disabled) {
+    background: $glass-bg;
+    border-color: $accent-cyan;
+  }
+}
+
+@mixin button-ghost {
+  @include button-base;
+  background: transparent;
+  color: $text-primary;
+  
+  &:hover:not(:disabled) {
+    background: $glass-bg;
+  }
+}
+
+// H-Button mixin (based on h-btn pattern)
+@mixin h-btn($height: 42px, $padding-start: 10px, $padding-end: 10px) {
+  // CSS Custom Properties
+  --padding-start: #{$padding-start};
+  --padding-end: #{$padding-end};
+  --background-color: #{$bg-secondary};
+  --text-color: #{$text-primary};
+  --border-color: #{$glass-border};
+  
+  // Base h-btn styles
+  background: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: $height;
+  line-height: 1.2;
+  padding: 0 var(--padding-end) 0 var(--padding-start);
+  position: relative;
+  transition: color 0.3s, background-color 0.3s, transform 0.3s;
+  white-space: nowrap;
+  cursor: pointer;
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  
+  &:hover:not(:disabled) {
+    background: var(--hover-background-color, #{$glass-bg});
+    transform: translateY(-1px);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+  }
+  
+  &:focus-visible {
+    outline: 2px solid $accent-cyan;
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  @include reduced-motion {
+    transition: none;
+    
+    &:hover {
+      transform: none;
+    }
+    
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+// ============================================================================
+// VISUAL EFFECTS & ANIMATIONS
+// ============================================================================
+
+// Glass morphism effect
+@mixin glass-morphism($blur: 10px, $opacity: 0.1) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Cyberpunk glow effect
+@mixin cyberpunk-glow($color: $accent-cyan, $intensity: 0.5) {
+  box-shadow: 
+    0 0 10px rgba($color, $intensity * 0.3),
+    0 0 20px rgba($color, $intensity * 0.2),
+    0 0 30px rgba($color, $intensity * 0.1);
+}
+
+// Smooth transitions
+@mixin transition($properties: all, $duration: 0.3s, $easing: ease) {
+  transition: $properties $duration $easing;
+  
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+// Hover lift effect
+@mixin hover-lift($distance: 4px) {
+  @include transition(transform);
+  
+  &:hover {
+    transform: translateY(-$distance);
+  }
+  
+  @include reduced-motion {
+    &:hover {
+      transform: none;
+    }
+  }
+}
+
+// Pulse animation
+@mixin pulse($scale: 1.05, $duration: 2s) {
+  animation: pulse-#{unique-id()} $duration ease-in-out infinite;
+  
+  @keyframes pulse-#{unique-id()} {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale($scale); }
+  }
+  
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+// Fade in animation
+@mixin fade-in($duration: 0.5s, $delay: 0s) {
+  opacity: 0;
+  animation: fade-in-#{unique-id()} $duration ease forwards $delay;
+  
+  @keyframes fade-in-#{unique-id()} {
+    to { opacity: 1; }
+  }
+  
+  @include reduced-motion {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+// Slide in animation
+@mixin slide-in($direction: up, $distance: 20px, $duration: 0.5s, $delay: 0s) {
+  $transform-from: translateY($distance);
+  
+  @if $direction == down {
+    $transform-from: translateY(-$distance);
+  } @else if $direction == left {
+    $transform-from: translateX($distance);
+  } @else if $direction == right {
+    $transform-from: translateX(-$distance);
+  }
+  
+  transform: $transform-from;
+  animation: slide-in-#{unique-id()} $duration ease forwards $delay;
+  
+  @keyframes slide-in-#{unique-id()} {
+    to { transform: translate(0, 0); }
+  }
+  
+  @include reduced-motion {
+    transform: translate(0, 0);
+    animation: none;
+  }
+}
+
+// ============================================================================
+// TEXT & TYPOGRAPHY UTILITIES
+// ============================================================================
+
+// Mobile-safe text that doesn't break layout
+@mixin mobile-text {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  
+  // Prevent text from being too small on mobile
+  @media (max-width: 320px) {
+    font-size: max(16px, 1em);
+  }
+}
+
+// Text truncation
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Multi-line text truncation
+@mixin text-truncate-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Gradient text
+@mixin gradient-text($gradient: $gradient-cyan-mint) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+// ============================================================================
+// UTILITY MIXINS
+// ============================================================================
+
+// Hide element visually but keep it accessible
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// Reset list styles
+@mixin list-reset {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+// Clear floats
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// Aspect ratio
+@mixin aspect-ratio($width: 16, $height: 9) {
+  aspect-ratio: $width / $height;
+  
+  // Fallback for older browsers
+  @supports not (aspect-ratio: 1) {
+    position: relative;
+    
+    &::before {
+      content: '';
+      display: block;
+      padding-top: math.percentage($height / $width);
+    }
+    
+    > * {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+// Remove text selection
+@mixin no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// Legacy alias
+@mixin removeTextSelect {
+  @include no-select;
+}
+
+// ============================================================================
+// SCROLLBAR & BROWSER SPECIFIC
+// ============================================================================
+
+// Custom scrollbar styling
+@mixin scrollbar($width: 6px, $track-color: transparent, $thumb-color: $text-muted, $thumb-hover-color: $accent-cyan) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: $width * 0.5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $width * 0.5;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: $thumb-hover-color;
+    }
+  }
+}
+
+// Legacy scrollbar mixin
+@mixin scrollBar {
+  @include scrollbar(4px, $white, $text-muted, $text-muted);
+}
+
+// Thin scrollbar for mobile
+@mixin thin-scrollbar {
+  @include scrollbar(2px, transparent, rgba($text-muted, 0.5), $accent-cyan);
+}
+
+// Hide scrollbar but keep functionality
+@mixin hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// Safari-specific fixes
+@mixin safari-fixes {
+  @media not all and (min-resolution: .001dpcm) {
+    @supports (-webkit-appearance: none) {
+      @content;
+    }
+  }
+}
+
+// Legacy safari fixes
+@mixin safari_fixes() {
+  @include safari-fixes {
+    @content;
+  }
+}
+
+// iOS-specific styles
+@mixin ios {
+  @supports (-webkit-touch-callout: none) {
+    @content;
+  }
+}
+
+// Legacy iOS mixin
+@mixin ios() {
+  @include ios {
+    @content;
+  }
+}
+
+// ============================================================================
+// TELEGRAM WEB APP SPECIFIC
+// ============================================================================
+
+// Telegram Web App safe area
+@mixin tg-safe-area {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+// Telegram Web App viewport
+@mixin tg-viewport {
+  min-height: 100vh;
+  min-height: 100dvh; // Dynamic viewport height
+  width: 100%;
+  overflow-x: hidden;
+}
+
+// Telegram Web App button styling
+@mixin tg-button {
+  @include button-base;
+  background: $tg-button;
+  color: $tg-button-text;
+  
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+}
+
+// Telegram Web App theme integration
+@mixin tg-theme-aware($property, $light-value, $dark-value: null) {
+  #{$property}: $light-value;
+  
+  @if $dark-value {
+    @include dark-mode {
+      #{$property}: $dark-value;
+    }
+  }
+}
+
+// ============================================================================
+// PERFORMANCE & OPTIMIZATION
+// ============================================================================
+
+// Hardware acceleration
+@mixin hardware-accelerate {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+// Optimize for animations
+@mixin will-change($properties) {
+  will-change: $properties;
+}
+
+// GPU layer promotion
+@mixin gpu-layer {
+  transform: translate3d(0, 0, 0);
+}
+
+// Optimize text rendering
+@mixin optimize-text {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+// ============================================================================
+// LEGACY SUPPORT & ALIASES
+// ============================================================================
+
+// Legacy removeTextSelect (keep for backward compatibility)
+@mixin removeTextSelect {
+  @include no-select;
+}

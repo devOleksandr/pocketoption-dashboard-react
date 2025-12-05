@@ -1,0 +1,454 @@
+@use '../../styles/_mixins.scss' as *;
+@use '../../styles/_config.scss' as *;
+
+.header {
+  height: 60px;
+  padding: 0 20px;
+  @include flex-between;
+  background-color: #1c202e;
+  border-bottom: 1px solid $glass-border;
+  
+  // Responsive adjustments
+  @include media-up(mobile-m) {
+    height: 64px;
+    padding: 0 $spacing-lg;
+  }
+  
+  // Touch-friendly on mobile
+  @include media-down(mobile-l) {
+    min-height: $touch-target-min;
+  }
+}
+
+// Left Section
+.leftSection {
+  @include flex-center;
+  gap: $spacing-md;
+}
+
+.logoContainer {
+  @include flex-center;
+  gap: $spacing-sm;
+  border: 1px solid rgba(52, 62, 82, .5);
+  color: rgba(142, 165, 192, .5);
+  border-radius: 8px;
+  width: 42px;
+  height: 42px;
+}
+
+.logo {
+  @include flex-center;
+  gap: $spacing-xs;
+  color: $text-primary;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.logoIcon {
+  font-size: 20px;
+}
+
+.logoText {
+  font-size: 18px;
+  font-weight: 600;
+  
+  @include media-down(mobile-s) {
+    display: none; // Hide on very small screens
+  }
+}
+
+.starButton {
+  @include touch-target(32px);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  @include transition(all, 0.3s);
+  color: $text-muted;
+  
+  &:hover {
+    color: $accent-cyan;
+    transform: scale(1.1);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.starIcon {
+  width: 21px;
+  height: 20px;
+  color: currentColor;
+}
+
+// Right Section
+.rightSection {
+  @include flex-center;
+  gap: $spacing-md;
+  
+  @include media-down(mobile-l) {
+    gap: $spacing-sm;
+  }
+}
+
+// Account Info - Button Style with Material UI border break effect
+.accountInfo {
+  @include h-btn(42px, 12px, 12px);
+  
+  // Custom properties for account info button
+  --background-color: #1A1D29;
+  --border-color: #A0A3AB;
+  --text-color: #{$white};
+  --hover-background-color: #252835;
+  
+  @include flex-column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 12px;
+//   height: auto;
+  min-height: 42px;
+  cursor: pointer;
+  @include transition(all, 0.3s);
+  position: relative;
+  border: 1px solid var(--border-color);
+  background: var(--background-color);
+  
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  @include media-down(mobile-s) {
+    display: none; // Hide on very small screens
+  }
+  
+  @include media-down(mobile-l) {
+    padding: 6px 10px;
+    min-height: 38px;
+  }
+}
+
+.accountType {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  right: 8px;
+  @include flex-between;
+  width: calc(100% - 16px);
+  font-size: 10px;
+  color: #A0A3AB;
+  font-weight: 400;
+  line-height: 1;
+  margin: 0;
+  background: var(--background-color);
+  padding: 0 4px;
+  z-index: 2;
+  
+  // Material UI style border break effect - left part
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -4px;
+    width: 4px;
+    height: 1px;
+    background: var(--background-color);
+    z-index: 1;
+  }
+  
+  // Material UI style border break effect - right part
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -4px;
+    width: 4px;
+    height: 1px;
+    background: var(--background-color);
+    z-index: 1;
+  }
+}
+
+.balanceContainer {
+  @include flex-center;
+  gap: 6px;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.balance {
+  font-size: 14px;
+  color: #FFFFFF;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+}
+
+.refreshButton {
+  @include touch-target(40px);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  @include transition(transform, 0.3s);
+  font-size: 12px;
+  padding: 0;
+  margin: 0;
+  min-width: 40px;
+  min-height: 40px;
+  @include flex-center;
+  
+  &:hover {
+    transform: rotate(180deg);
+  }
+  
+  &:active {
+    transform: rotate(360deg);
+  }
+}
+
+.refreshIcon {
+  width: 30px;
+  height: 35px;
+  color: #A0A3AB;
+}
+
+.nav {
+  @include flex-center;
+  gap: $spacing-md;
+}
+
+.navItem {
+  @include touch-target;
+  color: $text-secondary;
+  text-decoration: none;
+  border-radius: $border-radius-sm;
+  
+  &:hover {
+    color: $text-primary;
+    background-color: $glass-bg;
+    @include transition(all);
+  }
+  
+  &.active {
+    color: $accent-cyan;
+    background-color: rgba($accent-cyan, 0.1);
+  }
+}
+
+// Bonus Button Styles (h-btn based)
+.bonusButton {
+  @include h-btn(42px, 10px, 10px);
+  
+  // Custom properties for bonus button
+  --background-color: linear-gradient(135deg, #1a4b84 0%, #2d5aa0 100%);
+  --hover-background-color: linear-gradient(135deg, #1e5394 0%, #3464b0 100%);
+  --text-color: #ffffff;
+  --border-color: rgba(255, 255, 255, 0.1);
+  
+  // Additional styles specific to bonus button
+  font-size: 14px;
+  font-weight: 600;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+  
+  // Responsive adjustments
+  @include media-down(mobile-l) {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    height: 38px;
+    font-size: 12px;
+    gap: 8px;
+  }
+  
+  @include media-down(mobile-s) {
+    --padding-start: 6px;
+    --padding-end: 6px;
+    height: 36px;
+    font-size: 11px;
+    gap: 6px;
+  }
+}
+
+
+.bonusIcon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0;
+  // Базовый поворот как на скриншоте
+  transform: rotate(-15deg);
+  @include transition(transform, 0.3s, ease-out);
+  
+  @include media-down(mobile-l) {
+    width: 20px;
+    height: 20px;
+  }
+  
+  @include media-down(mobile-s) {
+    width: 18px;
+    height: 18px;
+  }
+  
+  // Дополнительный поворот при hover
+  .bonusButton:hover & {
+    transform: rotate(-25deg) scale(1.1);
+  }
+  
+  @include reduced-motion {
+    // Оставляем базовый поворот даже при reduced motion
+    transform: rotate(-15deg);
+    
+    .bonusButton:hover & {
+      transform: rotate(-15deg); // Без дополнительной анимации
+    }
+  }
+}
+
+.bonusTextContainer {
+  @include flex-column;
+  align-items: flex-start;
+  gap: 1px;
+  line-height: 1;
+  
+  @include media-down(mobile-s) {
+    display: none; // Hide text on very small screens
+  }
+}
+
+.bonusText {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.1;
+  letter-spacing: 0.3px;
+  margin: 0;
+  
+  @include media-down(mobile-l) {
+    font-size: 12px;
+  }
+  
+  @include media-down(mobile-s) {
+    font-size: 11px;
+  }
+}
+
+.bonusSubtext {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.2px;
+  margin: 0;
+  
+  @include media-down(mobile-l) {
+    font-size: 9px;
+  }
+  
+  @include media-down(mobile-s) {
+    font-size: 8px;
+  }
+}
+
+// Top Up Button
+.topUpButton {
+  @include h-btn(42px, 12px, 16px);
+  
+  // Custom properties for top up button
+  --icon-color: #5aa86b;
+  --background-color: #074f40;
+  --border-color: #047838;
+  --hover-background-color: #0a5f4a;
+  --text-color: #{$white};
+  
+  font-size: 14px;
+  font-weight: 700;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(5, 122, 56, 0.3);
+  }
+  
+  // Responsive adjustments
+  @include media-down(mobile-l) {
+    --padding-start: 10px;
+    --padding-end: 12px;
+    height: 38px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  
+  @include media-down(mobile-s) {
+    --padding-start: 8px;
+    --padding-end: 10px;
+    height: 36px;
+    font-size: 11px;
+    gap: 4px;
+  }
+}
+
+.walletIcon {
+  width: 18px;
+  height: 16px;
+  color: var(--icon-color, currentColor);
+  
+  @include media-down(mobile-l) {
+    width: 16px;
+    height: 14px;
+  }
+}
+
+.topUpText {
+  font-weight: inherit;
+  
+  @include media-down(mobile-s) {
+    display: none; // Hide text on very small screens, keep only icon
+  }
+}
+
+// Avatar Button
+.avatarButton {
+  width: 42px;
+  height: 42px;
+  background: transparent;
+  border: 2px solid $glass-border;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include transition(all, 0.3s);
+  
+  &:hover {
+    border-color: $accent-cyan;
+    box-shadow: 0 0 12px rgba($accent-cyan, 0.3);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  @include media-down(mobile-l) {
+    width: 38px;
+    height: 38px;
+  }
+  
+  @include media-down(mobile-s) {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}

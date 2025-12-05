@@ -1,0 +1,119 @@
+// Mobile-First Breakpoints for Telegram Mini App
+$breakpoints: (
+        mobile-s: 320px,   // Small mobile (min)
+        mobile-m: 375px,   // Medium mobile (iPhone SE, etc)
+        mobile-l: 425px,   // Large mobile (iPhone 12, etc)
+        tablet: 768px,     // Tablet (if needed)
+        desktop: 1024px,   // Desktop (rarely used in Telegram)
+        
+        // Legacy support (max-width, for existing code)
+        xss: 400px,
+        xs: 576px,
+        sm: 768px,
+        md: 991px,
+        lg: 1200px,
+        xl: 1440px,
+);
+
+// Pocket Land Design System - Color Palette
+// Primary Background Colors
+$bg-primary: #0B0E13;            // Main dark background
+$bg-secondary: #0E1420;          // Secondary background / Card
+$bg-tertiary: #0E1114;           // Tertiary background
+
+// Glass & Overlay Effects
+$glass-bg: rgba(255, 255, 255, 0.04);        // Glass background
+$glass-border: rgba(255, 255, 255, 0.06);    // Glass border
+$wave-overlay: rgba(255, 255, 255, 0.08);    // Wave overlay
+
+// Text Colors
+$text-primary: #EAF6FF;          // Primary text color
+$text-secondary: #B9C7D6;        // Secondary text
+$text-muted: #8FA0B2;            // Muted text
+$text-fog: #AAB0B6;              // Fog text
+
+// Pure Colors
+$white: #FFFFFF;                 // Pure white
+$pure-white: #FFFFFF;            // Pure white
+
+// Accent Colors - Cyan/Mint Palette
+$accent-cyan: #2BD2FF;           // Primary cyan accent
+$accent-mint: #11E5B4;           // Mint green accent
+$accent-sapphire: #1E9FFF;       // Sapphire blue
+$accent-neon-green: #00FF85;     // Neon green
+
+// Metallic/Neutral Accents
+$accent-gold: #C6A667;           // Subtle gold
+$accent-graphite: #0B0B0E;       // Graphite dark
+
+// Node States
+$node-active: #EAF6FF;           // Active node
+$node-locked: rgba(255, 255, 255, 0.28);  // Locked node
+
+// Status Colors
+$status-error: #FF496A;          // Error / Destructive
+$status-warning: #FFB020;        // Warning
+$status-success: $accent-mint;   // Success (mint green)
+$status-info: $accent-cyan;      // Info (cyan)
+
+// Gradients
+$gradient-cyan-mint: linear-gradient(135deg, $accent-cyan 0%, $accent-mint 100%);
+$gradient-primary: linear-gradient(90deg, $accent-cyan 0%, $accent-mint 100%);
+$gradient-primary-alpha: linear-gradient(90deg, rgba(43, 210, 255, 0.19) 0%, rgba(17, 229, 180, 0.19) 100%);
+$gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+$gradient-white-green: linear-gradient(135deg, #FFFFFF 0%, #21A183 47.12%, #09362F 100%);
+$gradient-green: linear-gradient(135deg, $accent-mint 0%, $accent-neon-green 100%);
+$gradient-glow: 0 0 24px rgba(43, 210, 255, 0.25);  // Cyan glow shadow
+
+// Semantic Colors
+$success: $status-success;
+$warning: $status-warning;
+$error: $status-error;
+$info: $status-info;
+
+// Telegram Theme Colors
+$tg-bg: var(--tg-theme-bg-color, #ffffff);
+$tg-text: var(--tg-theme-text-color, #000000);
+$tg-hint: var(--tg-theme-hint-color, #999999);
+$tg-link: var(--tg-theme-link-color, #2481cc);
+$tg-button: var(--tg-theme-button-color, #2481cc);
+$tg-button-text: var(--tg-theme-button-text-color, #ffffff);
+$tg-secondary-bg: var(--tg-theme-secondary-bg-color, #f1f1f1);
+
+// Touch-Friendly Sizes (Mobile-First)
+$touch-target-min: 44px;     // Minimum touch target size
+$touch-target-comfortable: 48px; // Comfortable touch target
+
+// Spacing System
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+
+// Component Heights
+$header-height: 64px;
+$header-height-small: 56px;
+$navigation-height: 80px;
+$navigation-height-small: 72px;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 15px;
+$border-radius-xl: 16px;
+$border-radius-full: 9999px;
+
+// Legacy color mappings for backward compatibility
+$black: $bg-primary;
+$gray: $text-muted;
+$lightGray: $white;
+$darkBlue: $bg-secondary;
+
+// Theme Variants
+$primary: $accent-cyan;
+$secondary: $text-secondary;
+$accent: $accent-mint;
+$background: $bg-primary;
+$surface: $bg-secondary;
