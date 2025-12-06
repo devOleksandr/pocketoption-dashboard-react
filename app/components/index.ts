@@ -9,6 +9,7 @@ export { ChartType } from './ChartType/ChartType';
 export { TradingChart } from './TradingChart/TradingChart';
 export { TradingSidePanel } from './TradingSidePanel/TradingSidePanel';
 export { TimeframeModal } from './TimeframeModal/TimeframeModal';
+export { DesktopTimeframeSelector } from './DesktopTimeframeSelector/DesktopTimeframeSelector';
 export { TradeTimersBar } from './TradeTimersBar/TradeTimersBar';
 export { TradeResultModal } from './TradeResultModal/TradeResultModal';
 export { InsufficientFundsModal } from './InsufficientFundsModal/InsufficientFundsModal';
