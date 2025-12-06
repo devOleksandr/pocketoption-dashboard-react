@@ -101,7 +101,7 @@
     &__time-icon {
         background-color: #23283b;
         border: none;
-        color: #8b8b9a;
+        color: #f8f8fb;
         cursor: pointer;
         padding: 0px 16px;
         border-radius: 4px;
@@ -113,8 +113,7 @@
         min-height: 36px;
 
         &:hover {
-            color: #f8f8fb;
-            background-color: #2d3447;
+            opacity: 0.8;
         }
 
         svg {
@@ -131,6 +130,7 @@
         border: 1px solid #2c3245;
         border-radius: 8px;
         overflow: hidden;
+        cursor: pointer;
         min-height: 36px;
         -webkit-transition: border-color .3s;
         transition: border-color .3s;
@@ -151,6 +151,7 @@
         color: #f8f8fb;
         font-size: 14px;
         font-weight: 600;
+        font-family: 'Courier New', monospace;
         padding: 0px 16px;
         outline: none;
         min-height: 36px;
@@ -165,7 +166,7 @@
 
     &__amount-icon {
         background-color: #23283b;
-        color: #8b8b9a;
+        color: #f8f8fb;
         padding: 0px 16px;
         border-radius: 4px;
         -webkit-transition: background-color .3s;
@@ -175,117 +176,73 @@
         justify-content: center;
         min-height: 36px;
 
+        &:hover {
+            opacity: 0.8;
+        }
+
         img {
             width: 16px;
             height: 16px;
-            filter: brightness(0) saturate(100%) invert(60%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+            filter: brightness(0) invert(1);
         }
     }
 
     &__payout-info {
         background-color: #1f2334;
-        border: 1px dashed;
-        border-color: #2c3245;
+        border: 1px dashed #6e799f38;
         border-radius: 8px;
         padding: 12px 16px;
         text-align: center;
-        min-height: 36px;
+        min-height: 60px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 4px;
         -webkit-transition: border-color .3s;
         transition: border-color .3s;
-
-        &:hover {
-            border-color: #3b82f6;
-        }
-
-        &:focus-within {
-            border-color: #009af9;
-        }
         
         @media (max-width: 768px) {
-            flex-direction: row;
-            justify-content: space-between;
-            padding: 8px 12px;
-            
-            .trading-side-panel__payout-percentage {
-                font-size: 16px;
-                font-weight: 700;
-            }
+            padding: 10px 12px;
+            min-height: 56px;
         }
     }
 
     &__payout-percentage {
-        color: #4ade80;
+        color: rgb(111, 194, 116);
         font-size: 14px;
-        font-weight: 700;
-        margin-bottom: 4px;
+        font-weight: 400;
+        line-height: 1.2;
 
         &--win {
-            color: #4ade80;
+            color: rgb(111, 194, 116);
         }
 
         &--loss {
             color: #ef4444;
         }
+        
+        @media (max-width: 768px) {
+            font-size: 14px;
+        }
     }
 
-    &__payout-profit {
-        color: #8b8b9a;
+    &__payout-amount {
+        color: rgb(111, 194, 116);
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 400;
+        line-height: 1.2;
 
         &--win {
-            color: #4ade80;
+            color: rgb(111, 194, 116);
         }
 
         &--loss {
             color: #ef4444;
         }
-    }
-    
-    &__payout-item {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2px;
-        flex: 1;
         
         @media (max-width: 768px) {
-            align-items: center;
-            text-align: center;
-        }
-    }
-    
-    &__payout-label {
-        font-size: 11px;
-        color: #8b8b9a;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        
-        @media (max-width: 768px) {
-            font-size: 10px;
-        }
-    }
-    
-    &__payout-value {
-        font-size: 14px;
-        font-weight: 600;
-        color: #f8f8fb;
-        
-        &--win {
-            color: #4ade80;
-        }
-        
-        &--loss {
-            color: #ef4444;
-        }
-        
-        @media (max-width: 768px) {
-            font-size: 13px;
+            font-size: 14px;
         }
     }
 
@@ -298,24 +255,17 @@
 
     &__payout-info--desktop {
         background-color: #1f2334;
-        border: 1px dashed #2c3245;
+        border: 1px dashed #6e799f38;
         border-radius: 8px;
         padding: 12px 16px;
         text-align: center;
-        min-height: 36px;
+        min-height: 60px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 4px;
         transition: border-color 0.3s;
-
-        &:hover {
-            border-color: #3b82f6;
-        }
-
-        &:focus-within {
-            border-color: #009af9;
-        }
     }
 
     // Mobile version styles
@@ -329,23 +279,16 @@
 
     &__payout-info--mobile {
         background-color: #1f2334;
-        border: 1px dashed #2c3245;
+        border: 1px dashed #6e799f38;
         border-radius: 8px;
-        padding: 12px 16px;
+        padding: 10px 12px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        min-height: 36px;
+        justify-content: center;
+        gap: 4px;
+        min-height: 56px;
         transition: border-color 0.3s;
-
-        &:hover {
-            border-color: #3b82f6;
-        }
-
-        &:focus-within {
-            border-color: #009af9;
-        }
     }
 
     &__actions {
@@ -357,28 +300,46 @@
     &__btn {
         display: flex;
         align-items: center;
-        justify-content: start;
-        gap: 6px;
-        padding: 12px;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 16px;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         font-size: 14px;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        position: relative;
+        min-height: 48px;
 
         &--buy {
-            background: #32ac41;
+            background: #32ac40;
             color: white;
 
-            &:hover {
-                background: #289a35;
+            &:hover:not(:disabled) {
+                background: #2a9a35;
                 transform: translateY(-1px);
             }
 
-            &:active {
+            &:active:not(:disabled) {
+                transform: translateY(0);
+            }
+        }
+
+        &--ai {
+            background: #14a2fa;
+            color: white;
+            box-shadow: rgba(0, 156, 255, 0.5) 0px 0px 10px 0px, rgb(0, 156, 255) 0px 0px 10px 0px;
+
+            &:hover:not(:disabled) {
+                background: #0d8de0;
+                box-shadow: rgba(0, 156, 255, 0.6) 0px 0px 15px 0px, rgb(0, 156, 255) 0px 0px 15px 0px;
+                transform: translateY(-1px);
+            }
+
+            &:active:not(:disabled) {
                 transform: translateY(0);
             }
         }
@@ -387,14 +348,19 @@
             background: #f3382c;
             color: white;
 
-            &:hover {
+            &:hover:not(:disabled) {
                 background: #dc2f24;
                 transform: translateY(-1px);
             }
 
-            &:active {
+            &:active:not(:disabled) {
                 transform: translateY(0);
             }
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
     }
 
@@ -405,10 +371,30 @@
         width: 20px;
         height: 20px;
         flex-shrink: 0;
+
+        img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        &--ai {
+            width: 40px;
+            height: 40px;
+
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                box-shadow: rgb(255, 255, 255) 0px 1px 17px 0px;
+            }
+        }
     }
 
     &__btn-text {
-        text-align: center;
+        flex: 1;
+        text-align: left;
+        padding-left: 8px;
     }
 }
 
@@ -454,7 +440,7 @@
                 display: flex;
                 gap: 12px;
                 width: 100%;
-                
+
                 .trading-side-panel__section {
                     flex: 1;
                     min-width: 0;
@@ -469,14 +455,14 @@
             }
             
             &__actions {
-                flex-direction: row;
-                gap: 12px;
+                flex-direction: column;
+                gap: 10px;
                 flex: 0 0 auto;
                 width: 100%;
                 
                 .trading-side-panel__btn {
-                    flex: 1;
-                    padding: 12px 16px;
+                    width: 100%;
+                    padding: 14px 16px;
                     font-size: 14px;
                     min-height: 48px;
                     

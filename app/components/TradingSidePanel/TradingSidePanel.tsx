@@ -136,41 +136,27 @@ export const TradingSidePanel: FC = () => {
 
                 {/* Payout Section - Desktop Version */}
                 <div className="trading-side-panel__section trading-side-panel__section--desktop">
+                    <div className="trading-side-panel__label">
+                        Payout
+                        <i className="fa fa-question-circle-o" aria-hidden="true" style={{ fontSize: '10px', width: '13px', height: '13px' }}></i>
+                    </div>
                     <div className="trading-side-panel__payout-info trading-side-panel__payout-info--desktop">
                         {lastTradeDisplay ? (
                             <>
-                                <div className="trading-side-panel__payout-item">
-                                    <div className="trading-side-panel__payout-label">Payout</div>
-                                    <div className={`trading-side-panel__payout-value ${lastTradeDisplay.isWin ? 'trading-side-panel__payout-value--win' : 'trading-side-panel__payout-value--loss'}`}>
-                                        ${(Number(amount) + lastTradeDisplay.profit).toFixed(2)}
-                                    </div>
-                                </div>
-                                <div className={`trading-side-panel__payout-percentage ${lastTradeDisplay.isWin ? 'trading-side-panel__payout-percentage--win' : 'trading-side-panel__payout-percentage--loss'}`}>
+                                <div className="trading-side-panel__payout-percentage">
                                     {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.percentage}%
                                 </div>
-                                <div className="trading-side-panel__payout-item">
-                                    <div className="trading-side-panel__payout-label">Profit</div>
-                                    <div className={`trading-side-panel__payout-value ${lastTradeDisplay.isWin ? 'trading-side-panel__payout-value--win' : 'trading-side-panel__payout-value--loss'}`}>
-                                        {lastTradeDisplay.isWin ? '+' : ''}${lastTradeDisplay.profit.toFixed(2)}
-                                    </div>
+                                <div className="trading-side-panel__payout-amount">
+                                    {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.profit.toFixed(2)} UAH
                                 </div>
                             </>
                         ) : (
                             <>
-                                <div className="trading-side-panel__payout-item">
-                                    <div className="trading-side-panel__payout-label">Payout</div>
-                                    <div className="trading-side-panel__payout-value">
-                                        ${potentialProfit}
-                                    </div>
-                                </div>
                                 <div className="trading-side-panel__payout-percentage">
                                     +{payoutPercentage}%
                                 </div>
-                                <div className="trading-side-panel__payout-item">
-                                    <div className="trading-side-panel__payout-label">Profit</div>
-                                    <div className="trading-side-panel__payout-value">
-                                        +${(Number(amount) * 0.92).toFixed(2)}
-                                    </div>
+                                <div className="trading-side-panel__payout-amount">
+                                    +{(Number(amount) * 0.92).toFixed(2)} UAH
                                 </div>
                             </>
                         )}
@@ -179,41 +165,27 @@ export const TradingSidePanel: FC = () => {
 
                 {/* Payout Section - Mobile Version */}
                 <div className="trading-side-panel__section trading-side-panel__section--mobile">
+                    <div className="trading-side-panel__label">
+                        Payout
+                        <i className="fa fa-question-circle-o" aria-hidden="true" style={{ fontSize: '10px', width: '13px', height: '13px' }}></i>
+                    </div>
                     <div className="trading-side-panel__payout-info trading-side-panel__payout-info--mobile">
                         {lastTradeDisplay ? (
                             <>
-                                <div className="trading-side-panel__payout-item">
-                                    <div className="trading-side-panel__payout-label">Payout</div>
-                                    <div className={`trading-side-panel__payout-value ${lastTradeDisplay.isWin ? 'trading-side-panel__payout-value--win' : 'trading-side-panel__payout-value--loss'}`}>
-                                        ${(Number(amount) + lastTradeDisplay.profit).toFixed(2)}
-                                    </div>
-                                </div>
-                                <div className={`trading-side-panel__payout-percentage ${lastTradeDisplay.isWin ? 'trading-side-panel__payout-percentage--win' : 'trading-side-panel__payout-percentage--loss'}`}>
+                                <div className="trading-side-panel__payout-percentage">
                                     {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.percentage}%
                                 </div>
-                                <div className="trading-side-panel__payout-item">
-                                    <div className="trading-side-panel__payout-label">Profit</div>
-                                    <div className={`trading-side-panel__payout-value ${lastTradeDisplay.isWin ? 'trading-side-panel__payout-value--win' : 'trading-side-panel__payout-value--loss'}`}>
-                                        {lastTradeDisplay.isWin ? '+' : ''}${lastTradeDisplay.profit.toFixed(2)}
-                                    </div>
+                                <div className="trading-side-panel__payout-amount">
+                                    {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.profit.toFixed(2)} UAH
                                 </div>
                             </>
                         ) : (
                             <>
-                                <div className="trading-side-panel__payout-item">
-                                    <div className="trading-side-panel__payout-label">Payout</div>
-                                    <div className="trading-side-panel__payout-value">
-                                        ${potentialProfit}
-                                    </div>
-                                </div>
                                 <div className="trading-side-panel__payout-percentage">
                                     +{payoutPercentage}%
                                 </div>
-                                <div className="trading-side-panel__payout-item">
-                                    <div className="trading-side-panel__payout-label">Profit</div>
-                                    <div className="trading-side-panel__payout-value">
-                                        +${(Number(amount) * 0.92).toFixed(2)}
-                                    </div>
+                                <div className="trading-side-panel__payout-amount">
+                                    +{(Number(amount) * 0.92).toFixed(2)} UAH
                                 </div>
                             </>
                         )}
@@ -232,12 +204,23 @@ export const TradingSidePanel: FC = () => {
                         }}
                     >
                         <div className="trading-side-panel__btn-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" className="injected-svg" data-src="/themes/cabinet/svg/icons/btn-buy.svg?v=1" xmlnsXlink="http://www.w3.org/1999/xlink" role="img">
-                                <path d="M10 0C8.02219 0 6.08879 0.58649 4.4443 1.6853C2.79981 2.78412 1.51809 4.3459 0.761209 6.17317C0.00433284 8.00043 -0.193701 10.0111 0.192152 11.9509C0.578004 13.8907 1.53041 15.6725 2.92894 17.0711C4.32746 18.4696 6.10929 19.422 8.0491 19.8079C9.98891 20.1937 11.9996 19.9957 13.8268 19.2388C15.6541 18.4819 17.2159 17.2002 18.3147 15.5557C19.4135 13.9112 20 11.9778 20 10C19.9971 7.34874 18.9425 4.80691 17.0678 2.93219C15.1931 1.05746 12.6513 0.00294858 10 0Z" fill="#248F32"></path>
-                                <path d="M13.8319 12.832L13.8288 7.17244C13.8278 6.90725 13.722 6.65311 13.5343 6.46549C13.3467 6.27786 13.0926 6.172 12.8274 6.17101L7.16786 6.16792C6.90411 6.17016 6.65203 6.27647 6.46647 6.46372C6.28091 6.65097 6.17688 6.90401 6.17703 7.16777C6.17717 7.43154 6.28148 7.68469 6.46725 7.87214C6.65301 8.0596 6.90521 8.16619 7.16897 8.16873L10.4135 8.17057L6.46366 12.1204C6.27612 12.308 6.17085 12.5624 6.17099 12.8278C6.17114 13.0931 6.2767 13.3477 6.46444 13.5354C6.65218 13.7232 6.90674 13.8287 7.1721 13.8289C7.43746 13.829 7.6919 13.7237 7.87944 13.5362L11.8293 9.58635L11.8311 12.8309C11.8329 13.0952 11.9392 13.3481 12.1267 13.5344C12.3143 13.7208 12.5678 13.8255 12.8321 13.8256C13.0963 13.8258 13.3498 13.7214 13.5371 13.5352C13.7244 13.349 13.8304 13.0962 13.8319 12.832Z" fill="white"></path>
-                            </svg>
+                            <img src="/assets/images/newPictures/buy_button.svg" alt="Buy" width="20" height="20" />
                         </div>
                         <span className="trading-side-panel__btn-text">BUY</span>
+                    </button>
+                    <button
+                        className="trading-side-panel__btn trading-side-panel__btn--ai"
+                        onClick={() => {}}
+                        disabled={isTradingDisabled}
+                        style={{
+                            opacity: isTradingDisabled ? 0.5 : 1,
+                            cursor: isTradingDisabled ? 'not-allowed' : 'pointer'
+                        }}
+                    >
+                        <div className="trading-side-panel__btn-icon trading-side-panel__btn-icon--ai">
+                            <img src="/assets/images/newPictures/ai_button.svg" alt="AI Trading" width="40" height="40" />
+                        </div>
+                        <span className="trading-side-panel__btn-text">TRADING</span>
                     </button>
                     <button
                         className="trading-side-panel__btn trading-side-panel__btn--sell"
@@ -249,10 +232,7 @@ export const TradingSidePanel: FC = () => {
                         }}
                     >
                         <div className="trading-side-panel__btn-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" className="injected-svg" data-src="/themes/cabinet/svg/icons/btn-sell.svg?v=1" xmlnsXlink="http://www.w3.org/1999/xlink" role="img">
-                                <path d="M10 20C11.9778 20 13.9112 19.4135 15.5557 18.3147C17.2002 17.2159 18.4819 15.6541 19.2388 13.8268C19.9957 11.9996 20.1937 9.98891 19.8079 8.0491C19.422 6.10929 18.4696 4.32746 17.0711 2.92894C15.6725 1.53041 13.8907 0.578004 11.9509 0.192152C10.0111 -0.193701 8.00043 0.00433284 6.17317 0.761209C4.3459 1.51809 2.78412 2.79981 1.6853 4.4443C0.58649 6.08879 0 8.02219 0 10C0.00294858 12.6513 1.05746 15.1931 2.93219 17.0678C4.80691 18.9425 7.34874 19.9971 10 20Z" fill="#D1281F"></path>
-                                <path d="M7.16786 13.8324L12.828 13.8287C13.0932 13.8277 13.3474 13.7218 13.535 13.5341C13.7227 13.3465 13.8286 13.0923 13.8296 12.8271L13.8333 7.16702C13.831 6.90324 13.7247 6.65115 13.5375 6.46559C13.3502 6.28003 13.0972 6.17602 12.8334 6.17619C12.5696 6.17636 12.3164 6.2807 12.1289 6.4665C11.9414 6.65231 11.8348 6.90454 11.8322 7.16832L11.8301 10.4132L7.88023 6.46333C7.6927 6.27579 7.43825 6.17053 7.17286 6.17071C6.90747 6.17088 6.65288 6.27647 6.4651 6.46425C6.27732 6.65203 6.17173 6.90662 6.17155 7.17201C6.17138 7.4374 6.27664 7.69185 6.46418 7.87939L10.414 11.8292L7.16917 11.8314C6.90539 11.834 6.65315 11.9406 6.46735 12.1281C6.28155 12.3156 6.17721 12.5688 6.17704 12.8325C6.17686 13.0963 6.28087 13.3494 6.46643 13.5366C6.65199 13.7239 6.90409 13.8302 7.16786 13.8324Z" fill="white"></path>
-                            </svg>
+                            <img src="/assets/images/newPictures/sell_button.svg" alt="Sell" width="20" height="20" />
                         </div>
                         <span className="trading-side-panel__btn-text">SELL</span>
                     </button>
