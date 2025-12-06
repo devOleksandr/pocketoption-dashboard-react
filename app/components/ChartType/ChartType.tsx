@@ -33,11 +33,26 @@ export const ChartType: FC<ChartTypeProps> = ({
   return (
     <div className="chart-type">
       <div className="chart-type__main" onClick={() => setShowPairDropdown(!showPairDropdown)}>
-        <div className="chart-type__media">
-          <img src={`/assets/images/pars/${selectedIdx + 1}.png`} alt="" />
-        </div>
-        <span className="chart-type__name">{selectedPair}</span>
+        <span className="chart-type__name">{selectedPair} OTC</span>
         <i className="chart-type__arrow"></i>
+      </div>
+
+      <div className="chart-type__icons">
+        <div className="chart-type__icon-btn">
+          <img src="/assets/images/newPictures/icon1.svg" alt="Chart type" />
+        </div>
+        <div className="chart-type__icon-btn">
+          <i className="fa fa-sliders" aria-hidden="true"></i>
+        </div>
+        <div className="chart-type__icon-btn">
+          <i className="fa fa-paint-brush" aria-hidden="true"></i>
+        </div>
+        <div className="chart-type__icon-btn">
+          <i className="fa fa-ellipsis-h" aria-hidden="true"></i>
+        </div>
+        <div className="chart-type__icon-btn">
+          <img src="/assets/images/newPictures/icon2.svg" alt="Layout" />
+        </div>
       </div>
 
       {showPairDropdown && (
