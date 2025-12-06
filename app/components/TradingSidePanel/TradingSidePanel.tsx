@@ -2,6 +2,7 @@ import { useState, useEffect, type FC } from 'react';
 import { useTradingStore } from '~/stores';
 import { getScenarioInfo } from '~/utils/scenarioManager';
 import { TimeframeModal } from '../TimeframeModal/TimeframeModal';
+import { DesktopTimeframeSelector } from '../DesktopTimeframeSelector/DesktopTimeframeSelector';
 
 export const TradingSidePanel: FC = () => {
     const {
@@ -194,7 +195,7 @@ export const TradingSidePanel: FC = () => {
                     </button>
                     <button
                         className="trading-side-panel__btn trading-side-panel__btn--ai"
-                        onClick={() => {}}
+                        onClick={() => { }}
                         disabled={isTradingDisabled}
                         style={{
                             opacity: isTradingDisabled ? 0.5 : 1,
@@ -223,8 +224,15 @@ export const TradingSidePanel: FC = () => {
                 </div>
             </div>
 
+            {/* Desktop Timeframe Selector */}
+            <DesktopTimeframeSelector
+                isOpen={showTimeframeModal && typeof window !== 'undefined' && window.innerWidth > 768}
+                onClose={() => setShowTimeframeModal(false)}
+            />
+
+            {/* Mobile Timeframe Modal */}
             <TimeframeModal
-                isOpen={showTimeframeModal}
+                isOpen={showTimeframeModal && typeof window !== 'undefined' && window.innerWidth <= 768}
                 onClose={() => setShowTimeframeModal(false)}
             />
         </div>
