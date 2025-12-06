@@ -370,9 +370,9 @@ export const TradingChart: React.FC = () => {
                             y1={i * (chartHeight / 8)}
                             x2={1000}
                             y2={i * (chartHeight / 8)}
-                            stroke="#2d3548"
+                            stroke="#2f3b53"
                             strokeWidth={1}
-                            opacity={0.25}
+                            opacity={0.2}
                         />
                     ))}
 
@@ -384,7 +384,7 @@ export const TradingChart: React.FC = () => {
                             y1={0}
                             x2={i * 50}
                             y2={chartHeight}
-                            stroke="#2d3548"
+                            stroke="#2f3b53"
                             strokeWidth={1}
                             opacity={0.15}
                         />
@@ -402,8 +402,8 @@ export const TradingChart: React.FC = () => {
                             {/* Line on top */}
                             <polyline
                                 fill="none"
-                                stroke="#406490"
-                                strokeWidth="1.5"
+                                stroke="#71b8ff"
+                                strokeWidth="1.8"
                                 points={linePoints}
                             />
 
@@ -438,26 +438,70 @@ export const TradingChart: React.FC = () => {
                                             strokeDasharray="4,4"
                                         />
 
-                                        {/* Glowing dot - outer glow */}
-                                        <circle
-                                            cx={lastX}
-                                            cy={lastY}
-                                            r="8"
-                                            fill="#4FC3F7"
-                                            opacity={0.3}
-                                        />
-                                        {/* Glowing dot - inner circle */}
-                                        <circle
-                                            cx={lastX}
-                                            cy={lastY}
-                                            r="5"
-                                            fill="#4FC3F7"
-                                            stroke="#ffffff"
-                                            strokeWidth="2"
-                                        />
+                                        {/* Price dot with soft glow and pulse */}
+                                        <defs>
+                                            <style>{`
+                                                @keyframes pricePulse {
+                                                  0% { transform: scale(0.7); opacity: 0.7; }
+                                                  100% { transform: scale(1); opacity: 1; }
+                                                }
+                                            `}</style>
+                                        </defs>
+                                        <g style={{ animation: 'pricePulse 0.5s ease-out' }}>
+                                            <circle
+                                                cx={lastX}
+                                                cy={lastY}
+                                                r="9"
+                                                fill="rgba(41, 185, 255, 0.25)"
+                                            />
+                                            <circle
+                                                cx={lastX}
+                                                cy={lastY}
+                                                r="6"
+                                                fill="#29b9ff"
+                                                stroke="#0a6ea5"
+                                                strokeWidth="2"
+                                            />
+                                        </g>
                                     </g>
                                 );
                             })()}
+
+                            {/* Buy/Sell markers for active trades */}
+                            {activeTrades.map((trade, idx) => {
+                                if (!trade.entryPrice || !trade.entryTimestamp || visibleData.length < 2) return null;
+                                // Find nearest candle by timestamp
+                                let nearestIndex = 0;
+                                let nearestDiff = Number.MAX_SAFE_INTEGER;
+                                visibleData.forEach((c, i) => {
+                                    const diff = Math.abs((c.timestamp ?? 0) - trade.entryTimestamp);
+                                    if (diff < nearestDiff) {
+                                        nearestDiff = diff;
+                                        nearestIndex = i;
+                                    }
+                                });
+                                const x = (nearestIndex / (visibleData.length - 1)) * 900;
+                                const y = chartHeight - ((trade.entryPrice - minPrice) / priceRange) * chartHeight;
+                                const isBuy = trade.type === 'buy';
+                                const fill = isBuy ? '#32ac40' : '#f3382c';
+                                const stroke = isBuy ? '#1f8c2f' : '#c62820';
+                                const label = isBuy ? 'B' : 'S';
+                                return (
+                                    <g key={`${trade.id}-${idx}`} transform={`translate(${x}, ${y})`}>
+                                        <circle r="7" fill={fill} stroke={stroke} strokeWidth="1.5" opacity={0.9} />
+                                        <text
+                                            x="0"
+                                            y="3"
+                                            textAnchor="middle"
+                                            fontSize="9"
+                                            fontWeight="700"
+                                            fill="#ffffff"
+                                        >
+                                            {label}
+                                        </text>
+                                    </g>
+                                );
+                            })}
                         </>
                     ) : (
                         visibleData.map((candle, i) => {
