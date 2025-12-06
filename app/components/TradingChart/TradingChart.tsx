@@ -241,8 +241,13 @@ export const TradingChart: React.FC = () => {
 
     // Find trade labels for chart
     const getTradeLabels = () => {
-        // Показываем только активные сделки - завершенные сделки не показываем на графике
-        const currentPairTrades = Array.isArray(activeTrades) ? activeTrades.filter((t) => t.pair === selectedPair && t.status === 'active') : [];
+        const activeForPair = Array.isArray(activeTrades)
+            ? activeTrades.filter((t) => t.pair === selectedPair)
+            : [];
+        const closedForPair = Array.isArray(tradeHistory)
+            ? tradeHistory.filter((t) => t.pair === selectedPair && t.status === 'closed')
+            : [];
+        const currentPairTrades = [...activeForPair, ...closedForPair];
 
 
         const labels: Array<{
@@ -254,12 +259,14 @@ export const TradingChart: React.FC = () => {
         }> = [];
 
         currentPairTrades.forEach((trade) => {
-            // Ищем индекс свечи, которая ближе всего к времени входа в сделку
+            // Точка прив'язки: exit (closed) або entry (active)
             let entryIndex = -1;
             let minTimeDiff = Infinity;
+            const targetTime = trade.status === 'closed' && trade.exitTimestamp ? trade.exitTimestamp : trade.entryTimestamp;
+            const targetPrice = trade.status === 'closed' && trade.exitPrice ? trade.exitPrice : trade.entryPrice;
 
             dataToUse.forEach((candle, index) => {
-                const timeDiff = Math.abs(candle.timestamp - trade.entryTimestamp);
+                const timeDiff = Math.abs(candle.timestamp - targetTime);
                 if (timeDiff < minTimeDiff && timeDiff < 10000) { // 10 секунд максимум
                     minTimeDiff = timeDiff;
                     entryIndex = index;
@@ -267,13 +274,13 @@ export const TradingChart: React.FC = () => {
             });
 
             if (entryIndex !== -1) {
-                // Проверяем, находится ли сделка в видимой области
+                // Якщо в зоні видимості — ставимо по індексу, інакше справа
                 if (entryIndex >= startIndex && entryIndex < endIndex) {
                     const visibleIndex = entryIndex - startIndex;
 
                     labels.push({
                         x: visibleIndex,
-                        y: trade.entryPrice, // Используем цену входа
+                        y: targetPrice,
                         type: trade.type,
                         trade: trade,
                         status: trade.status || 'active',
@@ -284,7 +291,7 @@ export const TradingChart: React.FC = () => {
 
                     labels.push({
                         x: rightPosition,
-                        y: trade.entryPrice, // Используем цену входа
+                        y: targetPrice,
                         type: trade.type,
                         trade: trade,
                         status: trade.status || 'active',
@@ -438,11 +445,11 @@ export const TradingChart: React.FC = () => {
                                             strokeDasharray="4,4"
                                         />
 
-                                        {/* Price dot with soft glow and pulse */}
+                                        {/* Price dot: single circle, no border, pulse */}
                                         <defs>
                                             <style>{`
                                                 @keyframes pricePulse {
-                                                  0% { transform: scale(0.7); opacity: 0.7; }
+                                                  0% { transform: scale(0.7); opacity: 0.65; }
                                                   100% { transform: scale(1); opacity: 1; }
                                                 }
                                             `}</style>
@@ -451,16 +458,8 @@ export const TradingChart: React.FC = () => {
                                             <circle
                                                 cx={lastX}
                                                 cy={lastY}
-                                                r="9"
-                                                fill="rgba(41, 185, 255, 0.25)"
-                                            />
-                                            <circle
-                                                cx={lastX}
-                                                cy={lastY}
                                                 r="6"
-                                                fill="#29b9ff"
-                                                stroke="#0a6ea5"
-                                                strokeWidth="2"
+                                                fill="#05b6f9"
                                             />
                                         </g>
                                     </g>
@@ -481,14 +480,14 @@ export const TradingChart: React.FC = () => {
                                     }
                                 });
                                 const x = (nearestIndex / (visibleData.length - 1)) * 900;
-                                const y = chartHeight - ((trade.entryPrice - minPrice) / priceRange) * chartHeight;
+                                const y = chartHeight - (((trade.status === 'closed' && trade.exitPrice ? trade.exitPrice : trade.entryPrice) - minPrice) / priceRange) * chartHeight;
                                 const isBuy = trade.type === 'buy';
                                 const fill = isBuy ? '#32ac40' : '#f3382c';
                                 const stroke = isBuy ? '#1f8c2f' : '#c62820';
                                 const label = isBuy ? 'B' : 'S';
                                 return (
                                     <g key={`${trade.id}-${idx}`} transform={`translate(${x}, ${y})`}>
-                                        <circle r="7" fill={fill} stroke={stroke} strokeWidth="1.5" opacity={0.9} />
+                                        <circle r="7" fill={fill} stroke="none" opacity={0.9} />
                                         <text
                                             x="0"
                                             y="3"
@@ -597,17 +596,6 @@ export const TradingChart: React.FC = () => {
                         const boxY = y - 50 // Уменьшено расстояние от линии
                         const opacity = label.status === "active" ? 1 : 0.6
 
-                        console.log('Rendering trade marker:', {
-                            i,
-                            labelX: label.x,
-                            labelY: label.y,
-                            calculatedX: x,
-                            calculatedY: y,
-                            status: label.status,
-                            type: label.type
-                        })
-
-
                         return (
                             <g key={`label-${i}`} opacity={opacity}>
                                 {/* Маркер на линии графика */}
@@ -616,8 +604,7 @@ export const TradingChart: React.FC = () => {
                                     cy={y}
                                     r="6"
                                     fill={label.type === "buy" ? "#22c55e" : "#ef4444"}
-                                    stroke="#ffffff"
-                                    strokeWidth="2"
+                                    stroke="none"
                                 />
 
                                 {/* Прямоугольник с суммой над маркером */}

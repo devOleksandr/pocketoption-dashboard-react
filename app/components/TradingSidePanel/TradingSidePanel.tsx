@@ -1,6 +1,6 @@
 import { useState, useEffect, type FC } from 'react';
 import { useTradingStore } from '~/stores';
-import { resetScenario, getScenarioInfo } from '~/utils/scenarioManager';
+import { getScenarioInfo } from '~/utils/scenarioManager';
 import { TimeframeModal } from '../TimeframeModal/TimeframeModal';
 
 export const TradingSidePanel: FC = () => {
@@ -61,21 +61,6 @@ export const TradingSidePanel: FC = () => {
     const payoutPercentage = 92; // Fixed payout percentage as shown in screenshot
     // Показуємо загальну суму повернення: початковий amount + прибуток 92%
     const potentialProfit = (Number(amount) * 1.92).toFixed(2);
-
-    // Scenario info for debugging
-    const [scenarioInfo, setScenarioInfo] = useState(getScenarioInfo());
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setScenarioInfo(getScenarioInfo());
-        }, 500);
-        return () => clearInterval(interval);
-    }, []);
-
-    const handleResetScenario = () => {
-        resetScenario();
-        setScenarioInfo(getScenarioInfo());
-    };
 
     return (
         <div className="trading-side-panel">

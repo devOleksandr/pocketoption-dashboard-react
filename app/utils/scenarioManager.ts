@@ -5,18 +5,8 @@
  * тому кожна угода завершується в плюс.
  */
 
-const STORAGE_KEY = 'tradeScenarioIndex';
-
 export type Direction = 'up' | 'down';
 export type TradeType = 'buy' | 'sell';
-
-/**
- * Скидаємо збережений стан сценарію (необов'язково, але залишено для сумісності)
- */
-export const resetScenario = (): void => {
-    if (typeof window === 'undefined') return;
-    localStorage.removeItem(STORAGE_KEY);
-};
 
 /**
  * Будь-яка угода тепер виграє
