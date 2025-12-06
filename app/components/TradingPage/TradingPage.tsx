@@ -10,7 +10,6 @@ import { TradeTimersBar } from '../TradeTimersBar/TradeTimersBar';
 import { InsufficientFundsModal } from '../InsufficientFundsModal/InsufficientFundsModal';
 import BottomNavigation from '../BottomNavigation/BottomNavigation';
 import { type Direction } from '~/utils/scenarioManager';
-import { WelcomeBonusModal } from '../WelcomeBonusModal/WelcomeBonusModal';
 
 export const TradingPage: FC = () => {
     const [isLive] = useState(true);
@@ -28,8 +27,7 @@ export const TradingPage: FC = () => {
         setActiveTrades,
         chartViewport,
         activeTrades,
-        promoModalShown,
-        setWelcomeBonusModalVisible
+        promoModalShown
     } = useTradingStore();
 
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -225,13 +223,6 @@ export const TradingPage: FC = () => {
         };
     }, [isLive, timeframe, selectedPair, isInitialized]);
 
-    // Ensure welcome-bonus modal shows when promo trigger occurs
-    useEffect(() => {
-        if (promoModalShown) {
-            setWelcomeBonusModalVisible(true);
-        }
-    }, [promoModalShown, setWelcomeBonusModalVisible]);
-
     return (
         <>
             <Header />
@@ -262,7 +253,6 @@ export const TradingPage: FC = () => {
             <BottomNavigation />
 
             <InsufficientFundsModal />
-            <WelcomeBonusModal />
         </>
     );
 };

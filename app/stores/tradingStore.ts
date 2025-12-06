@@ -1,12 +1,8 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import {
-    getCurrentTradeIndex,
-    incrementTradeIndex,
     shouldTradeWin,
-    getScenarioDirection,
     generateScenarioPrice,
-    type Direction
 } from '~/utils/scenarioManager';
 
 export interface Trade {
@@ -25,8 +21,6 @@ export interface Trade {
     exitTimestamp?: number;
     profit?: number;
     duration?: number;
-    scenarioDirection?: Direction; // Напрямок руху графіка за сценарієм
-    tradeIndex?: number; // Індекс угоди в сценарії
 }
 
 export interface CandlestickData {
@@ -177,9 +171,6 @@ export interface TradingState {
     promoModalShown: boolean;
     setPromoModalVisible: (visible: boolean) => void;
 
-    // Welcome bonus modal
-    welcomeBonusModalVisible: boolean;
-    setWelcomeBonusModalVisible: (visible: boolean) => void;
 }
 
 export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
@@ -380,10 +371,6 @@ export const useTradingStore = create<TradingState>()(
             promoModalShown: false,
             setPromoModalVisible: (visible: boolean) => set({ promoModalVisible: visible, isTradingDisabled: visible ? true : get().isTradingDisabled }),
 
-            // Welcome bonus modal state
-            welcomeBonusModalVisible: false,
-            setWelcomeBonusModalVisible: (visible: boolean) => set({ welcomeBonusModalVisible: visible }),
-
             // Trading actions
             handleTrade: (direction: 'up' | 'down') => {
                 const state = get();
@@ -409,10 +396,6 @@ export const useTradingStore = create<TradingState>()(
                 const now = new Date();
                 const tradeType = direction === "up" ? "buy" : "sell";
 
-                // Отримуємо поточний індекс угоди та напрямок за сценарієм
-                const tradeIndex = getCurrentTradeIndex();
-                const scenarioDirection = getScenarioDirection(tradeIndex);
-
                 // Використовуємо ціну останньої свічки якщо є дані, інакше currentRate
                 const entryPrice = candlestickData.length > 0
                     ? candlestickData[candlestickData.length - 1].close
@@ -429,12 +412,7 @@ export const useTradingStore = create<TradingState>()(
                     pair: selectedPair,
                     timeframe,
                     chartType,
-                    scenarioDirection, // Зберігаємо напрямок за сценарієм
-                    tradeIndex, // Зберігаємо індекс угоди
                 };
-
-                // Збільшуємо лічильник угод
-                incrementTradeIndex();
 
                 state.addActiveTrade(newTrade);
             },
@@ -460,23 +438,15 @@ export const useTradingStore = create<TradingState>()(
                     const tradeDuration = currentTime - trade.entryTimestamp;
                     if (tradeDuration >= timeframe * 1000) {
                         // === СЦЕНАРІЇ УВІМКНЕНІ ===
-                        const tradeIndex = trade.tradeIndex ?? 0;
-
                         // Генеруємо сценарійну ціну на основі timeframe та волатильності
                         const scenarioPrice = generateScenarioPrice(
-                            tradeIndex,
+                            trade.type,
                             trade.timeframe,
                             trade.entryPrice,
                             currentPair.volatility
                         );
 
-                        const isWinning = shouldTradeWin(
-                            tradeIndex,
-                            trade.type,
-                            trade.timeframe,
-                            trade.entryPrice,
-                            scenarioPrice
-                        );
+                        const isWinning = shouldTradeWin();
 
                         // === СЦЕНАРІЇ ВИМКНЕНІ ===
                         // Використовуємо випадкову логіку замість сценарію
