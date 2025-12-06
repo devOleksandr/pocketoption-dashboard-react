@@ -289,6 +289,39 @@ body {
   }
 }
 
+.user-avatar__img-wrap{
+  border: 1px solid rgb(50, 172, 65) !important;
+  border-radius: 50% !important;
+  padding: 2px !important;
+  position: relative;
+  
+}
+
+.star{
+  border: 1px solid rgba(52,62,82,.5);
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  font-size: 20px;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+  border-radius: 8px;
+  transition: border-color 0.3s, color 0.3s;
+  margin-left: 20px;
+
+  svg{
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    path{
+      fill: rgba(142,165,192,.5);
+    }
+    
+  }
+}
+
 // Mobile header - hidden by default, show only on mobile
 .site-header--mobile {
   display: none !important;
@@ -332,7 +365,6 @@ body {
             .user-avatar__img-wrap {
               width: 32px;
               height: 32px;
-              
               .user-avatar__img {
                 width: 32px;
                 height: 32px;
