@@ -30,3 +30,5 @@ coverage/
 .parcel-cache/
 .turbo/
 .cache/
+node_modules
+.idea
