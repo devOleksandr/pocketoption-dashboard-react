@@ -63,8 +63,7 @@ export const ChartType: FC<ChartTypeProps> = ({
               onClick={() => handlePairSelect(pair)}
               className="chart-type__dropdown-item"
             >
-              <img src={`/assets/images/pars/${(idx % 10) + 1}.png`} alt="" />
-              {pair}
+              {pair} OTC
             </div>
           ))}
         </div>

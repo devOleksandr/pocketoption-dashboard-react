@@ -369,26 +369,29 @@ export const useTradingStore = create<TradingState>()(
             completedTradesCount: 0,
             promoModalVisible: false,
             promoModalShown: false,
-            setPromoModalVisible: (visible: boolean) => set({ promoModalVisible: visible, isTradingDisabled: visible ? true : get().isTradingDisabled }),
+            // Promo modal also controls trading availability
+            setPromoModalVisible: (visible: boolean) => set({
+                promoModalVisible: visible,
+                // вимикаємо кнопки під час модалки, інакше дивимося на активні угоди
+                isTradingDisabled: visible ? true : get().activeTrades.some(t => t.status === 'active'),
+            }),
 
             // Trading actions
             handleTrade: (direction: 'up' | 'down') => {
                 const state = get();
-                const { balance, amount, currentRate, selectedPair, timeframe, chartType, candlestickData, activeTrades, isTradingDisabled, promoModalVisible } = state;
+                const { balance, amount, currentRate, selectedPair, timeframe, chartType, candlestickData, isTradingDisabled, promoModalVisible, activeTrades } = state;
 
-                // Перевіряємо, чи є активні угоди або кнопки заблоковані
-                const hasActiveTrades = activeTrades.some(trade => trade.status === 'active');
+                const hasActiveTrades = Array.isArray(activeTrades) && activeTrades.some(trade => trade.status === 'active');
+
+                // Не дозволяємо нові угоди, якщо вже є активні або кнопки вимкнені
                 if (hasActiveTrades || isTradingDisabled || promoModalVisible) {
-                    return; // Не дозволяємо нові угоди, поки є активні або кнопки заблоковані
+                    return;
                 }
 
                 if (Number(amount) > balance) {
                     set({ showFundsModal: true });
                     return;
                 }
-
-                // Блокуємо кнопки торгів
-                set({ isTradingDisabled: true });
 
                 // Віднімаємо кошти від балансу при відкритті угоди
                 set({ balance: balance - Number(amount) });
@@ -415,6 +418,7 @@ export const useTradingStore = create<TradingState>()(
                 };
 
                 state.addActiveTrade(newTrade);
+                set({ isTradingDisabled: true });
             },
 
             checkExpiredTrades: (currentPrice: number, currentTime: number) => {
@@ -509,7 +513,8 @@ export const useTradingStore = create<TradingState>()(
                     set((state) => ({
                         activeTrades: stillActive,
                         tradeHistory: [...state.tradeHistory, ...toClose].slice(-50),
-                        isTradingDisabled: false, // Розблоковуємо кнопки після завершення угод
+                        // Якщо залишились активні — тримаємо кнопки вимкненими
+                        isTradingDisabled: stillActive.some(t => t.status === 'active'),
                     }));
 
                     // Update completed trades count and show promo modal after 3 trades (only once)
@@ -523,9 +528,10 @@ export const useTradingStore = create<TradingState>()(
                         set({ completedTradesCount: newCount });
                     }
                 } else {
+                    // Тримаємо стан кнопок відповідно до наявності активних угод
                     set({
                         activeTrades: stillActive,
-                        isTradingDisabled: stillActive.length === 0 ? false : state.isTradingDisabled, // Розблоковуємо тільки якщо немає активних угод
+                        isTradingDisabled: stillActive.some(t => t.status === 'active'),
                     });
                 }
             },

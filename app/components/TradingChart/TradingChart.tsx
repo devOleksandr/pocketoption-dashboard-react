@@ -19,7 +19,6 @@ export const TradingChart: React.FC = () => {
         selectedPair,
         chartType,
         activeTrades,
-        tradeHistory,
         currentRate,
         chartViewport,
         setChartViewport,
@@ -239,16 +238,11 @@ export const TradingChart: React.FC = () => {
     const priceRange = maxPrice - minPrice;
     const chartHeight = 500;
 
-    // Find trade labels for chart
+    // Find trade labels for chart (only active trades, history hidden)
     const getTradeLabels = () => {
         const activeForPair = Array.isArray(activeTrades)
-            ? activeTrades.filter((t) => t.pair === selectedPair)
+            ? activeTrades.filter((t) => t.pair === selectedPair && t.status === 'active')
             : [];
-        const closedForPair = Array.isArray(tradeHistory)
-            ? tradeHistory.filter((t) => t.pair === selectedPair && t.status === 'closed')
-            : [];
-        const currentPairTrades = [...activeForPair, ...closedForPair];
-
 
         const labels: Array<{
             x: number;
@@ -258,12 +252,12 @@ export const TradingChart: React.FC = () => {
             status: string;
         }> = [];
 
-        currentPairTrades.forEach((trade) => {
-            // Точка прив'язки: exit (closed) або entry (active)
+        activeForPair.forEach((trade) => {
+            // Точка прив'язки: entry (active)
             let entryIndex = -1;
             let minTimeDiff = Infinity;
-            const targetTime = trade.status === 'closed' && trade.exitTimestamp ? trade.exitTimestamp : trade.entryTimestamp;
-            const targetPrice = trade.status === 'closed' && trade.exitPrice ? trade.exitPrice : trade.entryPrice;
+            const targetTime = trade.entryTimestamp;
+            const targetPrice = trade.entryPrice;
 
             dataToUse.forEach((candle, index) => {
                 const timeDiff = Math.abs(candle.timestamp - targetTime);

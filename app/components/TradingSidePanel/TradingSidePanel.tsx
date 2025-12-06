@@ -33,7 +33,6 @@ export const TradingSidePanel: FC = () => {
         let val = e.target.value.replace(/[^0-9.]/g, "");
         if (val !== "") {
             let num = Number(val);
-            if (num > 100) num = 100;
             if (num < 1) num = 1;
             val = String(num);
         }
@@ -132,7 +131,7 @@ export const TradingSidePanel: FC = () => {
                                     {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.percentage}%
                                 </div>
                                 <div className="trading-side-panel__payout-amount">
-                                    {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.profit.toFixed(2)} UAH
+                                    {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.profit.toFixed(2)} USD
                                 </div>
                             </>
                         ) : (
@@ -141,7 +140,7 @@ export const TradingSidePanel: FC = () => {
                                     +{payoutPercentage}%
                                 </div>
                                 <div className="trading-side-panel__payout-amount">
-                                    +{(Number(amount) * 0.92).toFixed(2)} UAH
+                                    +{(Number(amount) * 0.92).toFixed(2)} USD
                                 </div>
                             </>
                         )}
@@ -161,7 +160,7 @@ export const TradingSidePanel: FC = () => {
                                     {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.percentage}%
                                 </div>
                                 <div className="trading-side-panel__payout-amount">
-                                    {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.profit.toFixed(2)} UAH
+                                    {lastTradeDisplay.isWin ? '+' : ''}{lastTradeDisplay.profit.toFixed(2)} USD
                                 </div>
                             </>
                         ) : (
@@ -170,7 +169,7 @@ export const TradingSidePanel: FC = () => {
                                     +{payoutPercentage}%
                                 </div>
                                 <div className="trading-side-panel__payout-amount">
-                                    +{(Number(amount) * 0.92).toFixed(2)} UAH
+                                    +{(Number(amount) * 0.92).toFixed(2)} USD
                                 </div>
                             </>
                         )}

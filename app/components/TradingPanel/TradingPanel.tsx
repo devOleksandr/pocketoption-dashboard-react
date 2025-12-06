@@ -16,10 +16,8 @@ export const TradingPanel: FC = () => {
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Remove everything except digits and dots
         let val = e.target.value.replace(/[^0-9.]/g, "");
-        // Don't allow more than 100
         if (val !== "") {
             let num = Number(val);
-            if (num > 100) num = 100;
             if (num < 1) num = 1;
             val = String(num);
         }
@@ -108,7 +106,7 @@ export const TradingPanel: FC = () => {
                     />
                     <button
                         className="chart-panel__input-btn"
-                        onClick={() => setAmount(String(Math.min(100, Number(amount) + 1)))}
+                        onClick={() => setAmount(String(Number(amount) + 1))}
                     ></button>
                 </div>
                 <button
