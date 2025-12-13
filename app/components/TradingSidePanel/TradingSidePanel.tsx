@@ -12,7 +12,9 @@ export const TradingSidePanel: FC = () => {
         setAmount,
         handleTrade,
         lastTradeDisplay,
-        isTradingDisabled
+        isTradingDisabled,
+        selectedPair,
+        currencyPairs
     } = useTradingStore();
 
     const [showTimeframeModal, setShowTimeframeModal] = useState(false);
@@ -58,9 +60,11 @@ export const TradingSidePanel: FC = () => {
         }
     };
 
-    const payoutPercentage = 92; // Fixed payout percentage as shown in screenshot
-    // Показуємо загальну суму повернення: початковий amount + прибуток 92%
-    const potentialProfit = (Number(amount) * 1.92).toFixed(2);
+    const currentPair = currencyPairs[selectedPair];
+    const payoutPercentage = currentPair?.payout || 92;
+    // Показуємо загальну суму повернення: початковий amount + прибуток (payout%)
+    const profitMultiplier = 1 + (payoutPercentage / 100);
+    const potentialProfit = (Number(amount) * profitMultiplier).toFixed(2);
 
     return (
         <div className="trading-side-panel">
@@ -141,7 +145,7 @@ export const TradingSidePanel: FC = () => {
                                     +{payoutPercentage}%
                                 </div>
                                 <div className="trading-side-panel__payout-amount">
-                                    +{(Number(amount) * 0.92).toFixed(2)} USD
+                                    +{(Number(amount) * (payoutPercentage / 100)).toFixed(2)} USD
                                 </div>
                             </>
                         )}
@@ -170,7 +174,7 @@ export const TradingSidePanel: FC = () => {
                                     +{payoutPercentage}%
                                 </div>
                                 <div className="trading-side-panel__payout-amount">
-                                    +{(Number(amount) * 0.92).toFixed(2)} USD
+                                    +{(Number(amount) * (payoutPercentage / 100)).toFixed(2)} USD
                                 </div>
                             </>
                         )}

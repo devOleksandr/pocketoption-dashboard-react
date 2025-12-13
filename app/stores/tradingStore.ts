@@ -39,6 +39,7 @@ export interface CurrencyPair {
     apiBase?: string;
     apiTarget?: string;
     flags?: string[];
+    payout?: number;
 }
 
 export interface TradeResult {
@@ -171,15 +172,21 @@ export interface TradingState {
     promoModalShown: boolean;
     setPromoModalVisible: (visible: boolean) => void;
 
+    // Trades panel visibility
+    showTradesPanel: boolean;
+    setShowTradesPanel: (show: boolean) => void;
+
 }
 
 export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
+    // Основные пары из оригинального списка
     "EUR/USD": {
         name: "EUR/USD",
         baseRate: 1.095,
         volatility: 0.001,
         apiBase: "EUR",
         apiTarget: "USD",
+        payout: 92,
     },
     "AUD/USD": {
         name: "AUD/USD",
@@ -187,6 +194,7 @@ export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
         volatility: 0.0015,
         apiBase: "AUD",
         apiTarget: "USD",
+        payout: 86,
     },
     "EUR/AUD": {
         name: "EUR/AUD",
@@ -194,6 +202,7 @@ export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
         volatility: 0.0012,
         apiBase: "EUR",
         apiTarget: "AUD",
+        payout: 92,
     },
     "EUR/JPY": {
         name: "EUR/JPY",
@@ -201,6 +210,7 @@ export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
         volatility: 0.15,
         apiBase: "EUR",
         apiTarget: "JPY",
+        payout: 92,
     },
     "EUR/CHF": {
         name: "EUR/CHF",
@@ -208,6 +218,7 @@ export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
         volatility: 0.001,
         apiBase: "EUR",
         apiTarget: "CHF",
+        payout: 89,
     },
     "AUD/JPY": {
         name: "AUD/JPY",
@@ -215,6 +226,7 @@ export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
         volatility: 0.12,
         apiBase: "AUD",
         apiTarget: "JPY",
+        payout: 31,
     },
     "EUR/CAD": {
         name: "EUR/CAD",
@@ -222,6 +234,7 @@ export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
         volatility: 0.0011,
         apiBase: "EUR",
         apiTarget: "CAD",
+        payout: 92,
     },
     "USD/CHF": {
         name: "USD/CHF",
@@ -229,6 +242,7 @@ export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
         volatility: 0.001,
         apiBase: "USD",
         apiTarget: "CHF",
+        payout: 92,
     },
     "CAD/JPY": {
         name: "CAD/JPY",
@@ -236,6 +250,7 @@ export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
         volatility: 0.13,
         apiBase: "CAD",
         apiTarget: "JPY",
+        payout: 92,
     },
     "AUD/CAD": {
         name: "AUD/CAD",
@@ -243,6 +258,401 @@ export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
         volatility: 0.0013,
         apiBase: "AUD",
         apiTarget: "CAD",
+        payout: 86,
+    },
+
+    // Дополнительные пары из HTML списка
+    "AED/CNY": {
+        name: "AED/CNY",
+        baseRate: 1.95,
+        volatility: 0.002,
+        apiBase: "AED",
+        apiTarget: "CNY",
+        payout: 92,
+    },
+    "AUD/CHF": {
+        name: "AUD/CHF",
+        baseRate: 0.585,
+        volatility: 0.0012,
+        apiBase: "AUD",
+        apiTarget: "CHF",
+        payout: 92,
+    },
+    "AUD/NZD": {
+        name: "AUD/NZD",
+        baseRate: 1.095,
+        volatility: 0.0015,
+        apiBase: "AUD",
+        apiTarget: "NZD",
+        payout: 92,
+    },
+    "BHD/CNY": {
+        name: "BHD/CNY",
+        baseRate: 19.05,
+        volatility: 0.003,
+        apiBase: "BHD",
+        apiTarget: "CNY",
+        payout: 92,
+    },
+    "CAD/CHF": {
+        name: "CAD/CHF",
+        baseRate: 0.655,
+        volatility: 0.0011,
+        apiBase: "CAD",
+        apiTarget: "CHF",
+        payout: 86,
+    },
+    "EUR/HUF": {
+        name: "EUR/HUF",
+        baseRate: 385.50,
+        volatility: 2.5,
+        apiBase: "EUR",
+        apiTarget: "HUF",
+        payout: 91,
+    },
+    "EUR/NZD": {
+        name: "EUR/NZD",
+        baseRate: 1.785,
+        volatility: 0.0018,
+        apiBase: "EUR",
+        apiTarget: "NZD",
+        payout: 92,
+    },
+    "EUR/RUB": {
+        name: "EUR/RUB",
+        baseRate: 105.25,
+        volatility: 1.2,
+        apiBase: "EUR",
+        apiTarget: "RUB",
+        payout: 92,
+    },
+    "GBP/JPY": {
+        name: "GBP/JPY",
+        baseRate: 189.45,
+        volatility: 0.18,
+        apiBase: "GBP",
+        apiTarget: "JPY",
+        payout: 92,
+    },
+    "KES/USD": {
+        name: "KES/USD",
+        baseRate: 0.0065,
+        volatility: 0.0001,
+        apiBase: "KES",
+        apiTarget: "USD",
+        payout: 92,
+    },
+    "LBP/USD": {
+        name: "LBP/USD",
+        baseRate: 0.000067,
+        volatility: 0.000001,
+        apiBase: "LBP",
+        apiTarget: "USD",
+        payout: 69,
+    },
+    "MAD/USD": {
+        name: "MAD/USD",
+        baseRate: 0.098,
+        volatility: 0.001,
+        apiBase: "MAD",
+        apiTarget: "USD",
+        payout: 92,
+    },
+    "TND/USD": {
+        name: "TND/USD",
+        baseRate: 0.315,
+        volatility: 0.003,
+        apiBase: "TND",
+        apiTarget: "USD",
+        payout: 87,
+    },
+    "USD/ARS": {
+        name: "USD/ARS",
+        baseRate: 1025.50,
+        volatility: 15.0,
+        apiBase: "USD",
+        apiTarget: "ARS",
+        payout: 88,
+    },
+    "USD/BDT": {
+        name: "USD/BDT",
+        baseRate: 119.85,
+        volatility: 0.8,
+        apiBase: "USD",
+        apiTarget: "BDT",
+        payout: 85,
+    },
+    "USD/CAD": {
+        name: "USD/CAD",
+        baseRate: 1.385,
+        volatility: 0.0012,
+        apiBase: "USD",
+        apiTarget: "CAD",
+        payout: 77,
+    },
+    "USD/CLP": {
+        name: "USD/CLP",
+        baseRate: 985.25,
+        volatility: 8.5,
+        apiBase: "USD",
+        apiTarget: "CLP",
+        payout: 55,
+    },
+    "USD/COP": {
+        name: "USD/COP",
+        baseRate: 4285.75,
+        volatility: 35.0,
+        apiBase: "USD",
+        apiTarget: "COP",
+        payout: 92,
+    },
+    "USD/DZD": {
+        name: "USD/DZD",
+        baseRate: 135.25,
+        volatility: 1.2,
+        apiBase: "USD",
+        apiTarget: "DZD",
+        payout: 68,
+    },
+    "USD/IDR": {
+        name: "USD/IDR",
+        baseRate: 15685.50,
+        volatility: 125.0,
+        apiBase: "USD",
+        apiTarget: "IDR",
+        payout: 92,
+    },
+    "USD/INR": {
+        name: "USD/INR",
+        baseRate: 83.25,
+        volatility: 0.6,
+        apiBase: "USD",
+        apiTarget: "INR",
+        payout: 83,
+    },
+    "USD/JPY": {
+        name: "USD/JPY",
+        baseRate: 155.25,
+        volatility: 1.2,
+        apiBase: "USD",
+        apiTarget: "JPY",
+        payout: 57,
+    },
+    "USD/MXN": {
+        name: "USD/MXN",
+        baseRate: 17.85,
+        volatility: 0.15,
+        apiBase: "USD",
+        apiTarget: "MXN",
+        payout: 80,
+    },
+    "USD/PKR": {
+        name: "USD/PKR",
+        baseRate: 285.75,
+        volatility: 2.5,
+        apiBase: "USD",
+        apiTarget: "PKR",
+        payout: 92,
+    },
+    "USD/RUB": {
+        name: "USD/RUB",
+        baseRate: 95.85,
+        volatility: 1.5,
+        apiBase: "USD",
+        apiTarget: "RUB",
+        payout: 92,
+    },
+    "USD/SGD": {
+        name: "USD/SGD",
+        baseRate: 1.345,
+        volatility: 0.008,
+        apiBase: "USD",
+        apiTarget: "SGD",
+        payout: 92,
+    },
+    "USD/THB": {
+        name: "USD/THB",
+        baseRate: 36.85,
+        volatility: 0.25,
+        apiBase: "USD",
+        apiTarget: "THB",
+        payout: 92,
+    },
+    "YER/USD": {
+        name: "YER/USD",
+        baseRate: 0.004,
+        volatility: 0.0001,
+        apiBase: "YER",
+        apiTarget: "USD",
+        payout: 92,
+    },
+    "ZAR/USD": {
+        name: "ZAR/USD",
+        baseRate: 0.053,
+        volatility: 0.0008,
+        apiBase: "ZAR",
+        apiTarget: "USD",
+        payout: 92,
+    },
+    "GBP/AUD": {
+        name: "GBP/AUD",
+        baseRate: 1.925,
+        volatility: 0.0018,
+        apiBase: "GBP",
+        apiTarget: "AUD",
+        payout: 91,
+    },
+    "USD/CNH": {
+        name: "USD/CNH",
+        baseRate: 7.285,
+        volatility: 0.05,
+        apiBase: "USD",
+        apiTarget: "CNH",
+        payout: 92,
+    },
+    "EUR/GBP": {
+        name: "EUR/GBP",
+        baseRate: 0.855,
+        volatility: 0.008,
+        apiBase: "EUR",
+        apiTarget: "GBP",
+        payout: 90,
+    },
+    "GBP/USD": {
+        name: "GBP/USD",
+        baseRate: 1.275,
+        volatility: 0.012,
+        apiBase: "GBP",
+        apiTarget: "USD",
+        payout: 87,
+    },
+    "USD/BRL": {
+        name: "USD/BRL",
+        baseRate: 5.185,
+        volatility: 0.045,
+        apiBase: "USD",
+        apiTarget: "BRL",
+        payout: 68,
+    },
+    "USD/MYR": {
+        name: "USD/MYR",
+        baseRate: 4.685,
+        volatility: 0.035,
+        apiBase: "USD",
+        apiTarget: "MYR",
+        payout: 49,
+    },
+    "JOD/CNY": {
+        name: "JOD/CNY",
+        baseRate: 10.15,
+        volatility: 0.08,
+        apiBase: "JOD",
+        apiTarget: "CNY",
+        payout: 86,
+    },
+    "CHF/JPY": {
+        name: "CHF/JPY",
+        baseRate: 175.25,
+        volatility: 1.5,
+        apiBase: "CHF",
+        apiTarget: "JPY",
+        payout: 73,
+    },
+    "QAR/CNY": {
+        name: "QAR/CNY",
+        baseRate: 1.985,
+        volatility: 0.015,
+        apiBase: "QAR",
+        apiTarget: "CNY",
+        payout: 92,
+    },
+    "USD/PHP": {
+        name: "USD/PHP",
+        baseRate: 56.85,
+        volatility: 0.45,
+        apiBase: "USD",
+        apiTarget: "PHP",
+        payout: 76,
+    },
+    "NZD/JPY": {
+        name: "NZD/JPY",
+        baseRate: 95.25,
+        volatility: 0.8,
+        apiBase: "NZD",
+        apiTarget: "JPY",
+        payout: 71,
+    },
+    "UAH/USD": {
+        name: "UAH/USD",
+        baseRate: 0.027,
+        volatility: 0.0005,
+        apiBase: "UAH",
+        apiTarget: "USD",
+        payout: 87,
+    },
+    "NZD/USD": {
+        name: "NZD/USD",
+        baseRate: 0.615,
+        volatility: 0.008,
+        apiBase: "NZD",
+        apiTarget: "USD",
+        payout: 62,
+    },
+    "EUR/TRY": {
+        name: "EUR/TRY",
+        baseRate: 35.85,
+        volatility: 0.45,
+        apiBase: "EUR",
+        apiTarget: "TRY",
+        payout: 72,
+    },
+    "SAR/CNY": {
+        name: "SAR/CNY",
+        baseRate: 1.925,
+        volatility: 0.015,
+        apiBase: "SAR",
+        apiTarget: "CNY",
+        payout: 77,
+    },
+    "CHF/NOK": {
+        name: "CHF/NOK",
+        baseRate: 11.85,
+        volatility: 0.12,
+        apiBase: "CHF",
+        apiTarget: "NOK",
+        payout: 63,
+    },
+    "USD/VND": {
+        name: "USD/VND",
+        baseRate: 24585.0,
+        volatility: 185.0,
+        apiBase: "USD",
+        apiTarget: "VND",
+        payout: 91,
+    },
+    "USD/EGP": {
+        name: "USD/EGP",
+        baseRate: 48.85,
+        volatility: 0.35,
+        apiBase: "USD",
+        apiTarget: "EGP",
+        payout: 79,
+    },
+    "NGN/USD": {
+        name: "NGN/USD",
+        baseRate: 0.00125,
+        volatility: 0.00002,
+        apiBase: "NGN",
+        apiTarget: "USD",
+        payout: 77,
+    },
+    "OMR/CNY": {
+        name: "OMR/CNY",
+        baseRate: 18.95,
+        volatility: 0.15,
+        apiBase: "OMR",
+        apiTarget: "CNY",
+        payout: 77,
     },
 };
 
@@ -376,6 +786,10 @@ export const useTradingStore = create<TradingState>()(
                 isTradingDisabled: visible ? true : get().activeTrades.some(t => t.status === 'active'),
             }),
 
+            // Trades panel visibility
+            showTradesPanel: false,
+            setShowTradesPanel: (show: boolean) => set({ showTradesPanel: show }),
+
             // Trading actions
             handleTrade: (direction: 'up' | 'down') => {
                 const state = get();
@@ -471,9 +885,11 @@ export const useTradingStore = create<TradingState>()(
 
                         // const isWinning = Math.random() < winChance;
 
-                        // При виграші: повертаємо початковий amount + прибуток 92%
+                        // При виграші: повертаємо початковий amount + прибуток (payout%)
                         // При програші: 0 (кошти вже списані при відкритті угоди)
-                        const profit = isWinning ? Number(trade.amount) * 1.92 : 0;
+                        const payout = currentPair?.payout || 92;
+                        const profitMultiplier = 1 + (payout / 100); // Например, для 92% = 1.92
+                        const profit = isWinning ? Number(trade.amount) * profitMultiplier : 0;
 
                         const closedTrade: Trade = {
                             ...trade,
@@ -488,7 +904,7 @@ export const useTradingStore = create<TradingState>()(
                         toClose.push(closedTrade);
 
                         // Calculate percentage for display
-                        const percentage = isWinning ? 92 : -100;
+                        const percentage = isWinning ? payout : -100;
 
                         set((state) => ({
                             balance: state.balance + profit,

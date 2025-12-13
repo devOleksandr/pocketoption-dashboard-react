@@ -12,6 +12,7 @@ interface SidebarItemProps {
     isBackArrow?: boolean;
     className?: string;
     badge?: BadgeConfig;
+    onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
@@ -21,7 +22,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     isActive = false,
     isBackArrow = false,
     className = '',
-    badge
+    badge,
+    onClick
 }) => {
     const linkClass = `main-nav__link ${isBackArrow ? 'main-nav__link--back' : ''} ${className}`.trim();
     const itemClass = `main-nav__item ${isActive ? 'main-nav__item--active' : ''}`.trim();
@@ -46,7 +48,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
     return (
         <li className={itemClass}>
-            <a href={href} className={linkClass}>
+            <a href={href} className={linkClass} onClick={onClick}>
                 <div className="main-nav__icon">
                     {typeof icon === 'string'
                         ? (() => {

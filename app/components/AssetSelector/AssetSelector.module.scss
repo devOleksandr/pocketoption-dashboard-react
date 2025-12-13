@@ -1,0 +1,474 @@
+.dropDownModalWrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9998;
+    background: transparent;
+    cursor: default;
+}
+
+.dropDownModal {
+    position: fixed;
+    background: #1c202e;
+    border: 1px solid #2d2d44;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    pointer-events: auto;
+    min-width: 600px;
+    max-width: 800px;
+    height: 518px;
+    display: flex;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+        min-width: 90vw;
+        max-width: 90vw;
+        max-height: 80vh;
+    }
+}
+
+
+.assetsBlock {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    padding: 24px;
+    background-color: #262c41;
+}
+
+.assetsBlockCol {
+    display: flex;
+    flex-direction: column;
+}
+
+.assetsBlockColNav {
+    width: 180px;
+    flex-shrink: 0;
+    
+    border-right: 1px solid #2d2d44;
+}
+
+.assetsBlockColBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.scrollbarContainer {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #1f2334;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #2563eb;
+    }
+}
+
+.assetsBlockNav {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+}
+
+.assetsBlockNavBottom {
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid #2d2d44;
+}
+
+.assetsBlockNavItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px;
+    background: #1d2130;
+    border: 1px solid #454a56;
+    border-radius: 4px;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+    font-family: "Noto Sans", Arial, sans-serif;
+    margin-bottom: 8px;
+
+    &:hover {
+        background-color: rgba(59, 130, 246, 0.1);
+        color: #f8f8fb;
+    }
+}
+
+.assetsBlockNavItemActive {
+    background-color: #314463;
+    border-color: #009af9;
+    color: #fff;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .1);
+}
+
+.assetsBlockNavIconWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    flex-shrink: 0;
+}
+
+.assetsBlockNavIcon {
+    font-size: 18px;
+    color: currentColor;
+}
+
+.svgIcon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.assetsBlockNavItemLabel {
+    flex: 1;
+}
+
+.assetsBlockFilters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0px 16px;
+   
+    flex-shrink: 0;
+}
+
+.filtersSearchBlock {
+    flex: 1;
+    position: relative;
+}
+
+.search {
+    position: relative;
+}
+
+.searchField {
+    width: 100%;
+    padding: 8px 32px 8px 12px;
+    background: #1f2334;
+    border: 1px solid #2d2d44;
+    border-radius: 4px;
+    color: #f8f8fb;
+    font-size: 13px;
+    font-family: "Noto Sans", Arial, sans-serif;
+    outline: none;
+    transition: border-color 0.2s ease;
+    background: #1d2130;
+    border-color: #454a56;
+    height: 28px;
+
+    &:focus {
+        border-color: #009af9;
+    }
+
+    &::placeholder {
+        color: #8b8b9a;
+    }
+}
+
+.searchIcon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8b8b9a;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.assetsBlockFiltersSortBlock {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0px 16px;
+    // margin-bottom: 8px;
+}
+
+.sortBlockItem {
+    padding: 6px 12px;
+    background: transparent;
+    
+    color: #8b8b9a;
+    text-decoration: none;
+    font-size: 12px;
+    font-family: "Noto Sans", Arial, sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &:hover {
+        
+        color: #f8f8fb;
+    }
+}
+
+.sortBlockItemActive {
+    
+    
+    color: #fff;
+}
+
+.sortBlockIcon {
+    font-size: 10px;
+}
+
+.assetsBlockBodyWrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.assetsBlockBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.assetsBlockBodyCurrency {
+    padding: 8px 0;
+}
+
+.assetsBlockAlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.alistItem {
+    margin: 0;
+    padding: 0;
+}
+
+.alistItemActive {
+    background-color: rgba(0, 154, 249, 0.1);
+}
+
+.alistItemNoActive {
+    opacity: 0.6;
+    
+    .alistLink {
+        cursor: not-allowed;
+        
+        &:hover {
+            background-color: transparent;
+        }
+    }
+}
+
+.alistLink {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    color: #f8f8fb;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 13px;
+    font-family: "Noto Sans", Arial, sans-serif;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+
+    &:hover {
+        background-color: rgba(59, 130, 246, 0.05);
+    }
+}
+
+.alistIconWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    color: #ff9706;
+    cursor: pointer;
+    line-height: 1;
+
+    &:hover {
+        color: #ffb340;
+    }
+}
+
+.alistIcon {
+    font-size: 14px;
+}
+
+.alistFlag {
+    display: flex;
+    align-items: center;
+    flex: 0 0 40px;
+    position: relative;
+    width: 40px;
+    height: 24px;
+    z-index: 1;
+    line-height: 1;
+}
+
+
+.flagTwo {
+    // Two flags overlapping
+    position: relative;
+    width: 100%;
+    height: 100%;
+    
+    :global(.fi) {
+        position: absolute;
+        border-radius: 50%;
+        border: 2px solid #1c202e;
+        width: 24px;
+        height: 24px;
+        
+        &:first-child {
+            left: 0;
+            z-index: 2;
+        }
+        
+        &:last-child {
+            left: 12px;
+            z-index: 1;
+        }
+    }
+}
+
+// Используем библиотеку flag-icon-css для флагов
+// Стили для flag-icon будут применены через глобальные классы
+
+.alistLabel {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+    color: #8ea5c0 !important;
+    font-size: 13px !important;
+    font-family: "Noto Sans", Arial, sans-serif !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    visibility: visible !important;
+    opacity: 1 !important;
+    line-height: 1.4;
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    pointer-events: auto;
+    -webkit-text-fill-color: #8ea5c0 !important;
+    background: transparent !important;
+    background-clip: unset !important;
+    -webkit-background-clip: unset !important;
+}
+
+.alistOtc {
+    color: #8ea5c0 !important;
+    font-size: 13px !important;
+    font-family: "Noto Sans", Arial, sans-serif !important;
+}
+
+.alistPayout {
+    color: rgb(111, 194, 116);
+    font-weight: 500;
+    flex: 0 0 auto;
+    min-width: 60px;
+    text-align: right;
+}
+
+.alistNoResults {
+    padding: 40px 16px;
+    text-align: center;
+    color: #8b8b9a;
+    font-size: 14px;
+    font-family: "Noto Sans", Arial, sans-serif;
+}
+
+.alistScheduleInfo {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #8b8b9a;
+    font-size: 12px;
+}
+
+.alistScheduleInfoIcon {
+    font-size: 12px;
+    color: #8b8b9a;
+}
+
+.alistScheduleInfoText {
+    color: #8b8b9a;
+}
+
+// Глобальные стили для flag-icons
+:global(.fi) {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    border: 2px solid #1c202e;
+    background-size: cover;
+    background-position: center;
+    object-fit: cover;
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .dropDownModal {
+        flex-direction: column;
+    }
+
+    .assetsBlockColNav {
+        width: 100%;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 1px solid #2d2d44;
+    }
+
+    .assetsBlockNav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 8px;
+    }
+
+    .assetsBlockNavItem {
+        white-space: nowrap;
+        min-width: 100px;
+    }
+}
+

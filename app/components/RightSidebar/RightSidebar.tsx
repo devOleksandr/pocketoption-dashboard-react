@@ -1,8 +1,18 @@
 import { type FC } from 'react';
 import SidebarItem from '../SidebarItem/SidebarItem';
+import { useTradingStore } from '~/stores';
 
 const RightSidebar: FC = () => {
     const link = import.meta.env.VITE_LINK || "https://pocketoption.com/en/cabinet/";
+    const { showTradesPanel, setShowTradesPanel, activeTrades } = useTradingStore();
+
+    const handleTradesClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        setShowTradesPanel(!showTradesPanel);
+    };
+
+    // Подсчитываем количество активных трейдов
+    const activeTradesCount = activeTrades.filter(trade => trade.status === 'active').length;
 
     return (
         <div className="right-sidebar show-text js-right-sidebar">
@@ -13,6 +23,9 @@ const RightSidebar: FC = () => {
                             href={link}
                             icon="fas fa-history"
                             text="Trades"
+                            isActive={showTradesPanel}
+                            onClick={handleTradesClick}
+                            badge={activeTradesCount > 0 ? { variant: 'count', value: activeTradesCount } : undefined}
                         />
                         <SidebarItem
                             href={link}

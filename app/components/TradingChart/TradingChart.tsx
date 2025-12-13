@@ -29,10 +29,52 @@ export const TradingChart: React.FC = () => {
     } = useTradingStore();
 
 
-    // Smooth animation effect
+    // Reset animation and state when pair changes - СИНХРОННО до рендера
+    const previousPairRef = useRef(selectedPair);
+
+    // Проверяем смену пары СИНХРОННО - до рендера
+    if (previousPairRef.current !== selectedPair) {
+        // Пара изменилась - немедленно сбрасываем состояние
+        previousPairRef.current = selectedPair;
+
+        // Отменяем любые активные анимации
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = null;
+        }
+    }
+
+    // Smooth animation effect - только для обновлений в рамках ОДНОЙ пары
     useEffect(() => {
         if (!Array.isArray(candlestickData) || candlestickData.length === 0) {
+            setAnimatedData([]);
+            setIsAnimating(false);
             return;
+        }
+
+        // НЕ запускаем анимацию, если это первая загрузка для пары (animatedData пуст)
+        // или если данных слишком мало
+        if (animatedData.length === 0 || candlestickData.length < 2) {
+            setAnimatedData(candlestickData);
+            return;
+        }
+
+        // Проверяем, что последняя свеча в animatedData и candlestickData примерно из одного диапазона
+        // Если разница слишком большая (смена пары), не анимируем
+        const lastAnimatedCandle = animatedData[animatedData.length - 1];
+        const lastNewCandle = candlestickData[candlestickData.length - 1];
+
+        if (lastAnimatedCandle && lastNewCandle) {
+            const priceDifference = Math.abs(lastAnimatedCandle.close - lastNewCandle.close);
+            const averagePrice = (lastAnimatedCandle.close + lastNewCandle.close) / 2;
+            const percentDifference = (priceDifference / averagePrice) * 100;
+
+            // Если разница больше 10%, это вероятно смена пары - не анимируем
+            if (percentDifference > 10) {
+                setAnimatedData(candlestickData);
+                setIsAnimating(false);
+                return;
+            }
         }
 
         // If we have new data and we're not already animating, start animation
@@ -78,7 +120,7 @@ export const TradingChart: React.FC = () => {
                 setAnimatedData(candlestickData);
             }
         }
-    }, [candlestickData, isAnimating, animatedData]);
+    }, [candlestickData, isAnimating, animatedData, selectedPair]);
 
     // Drag-to-scroll handlers
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -220,13 +262,15 @@ export const TradingChart: React.FC = () => {
     if (!Array.isArray(candlestickData) || candlestickData.length === 0) {
         return (
             <div style={{ height: '500px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1a1f2e' }}>
-                <div style={{ color: '#9ca3af' }}>No data available</div>
+                <div style={{ color: '#9ca3af' }}>Loading chart data...</div>
             </div>
         );
     }
 
-    // Використовуємо анімовані дані якщо є анімація, інакше оригінальні
-    const dataToUse = isAnimating && animatedData.length > 0 ? animatedData : candlestickData;
+    // Всегда используем оригинальные данные, анимация работает через animatedData
+    const dataToUse = (isAnimating && animatedData.length > 0)
+        ? animatedData
+        : candlestickData;
 
     // Показувати тільки видиму частину даних
     const startIndex = Math.max(0, dataToUse.length - chartZoom.visibleCandles - chartViewport.offset);

@@ -1,11 +1,13 @@
 import { useEffect, useCallback, useRef, useState, type FC } from 'react';
+import { flushSync } from 'react-dom';
 import { useTradingStore, type CandlestickData, type Trade } from '~/stores';
 import Header from '../Header/Header';
 import LeftSidebar from '../LeftSidebar/LeftSidebar';
 import RightSidebar from '../RightSidebar/RightSidebar';
-import { ChartType } from '../ChartType/ChartType';
+import { AssetSelector } from '../AssetSelector/AssetSelector';
 import { TradingChart } from '../TradingChart/TradingChart';
 import { TradingSidePanel } from '../TradingSidePanel/TradingSidePanel';
+import { Trades } from '../Trades/Trades';
 import { TradeTimersBar } from '../TradeTimersBar/TradeTimersBar';
 import { InsufficientFundsModal } from '../InsufficientFundsModal/InsufficientFundsModal';
 import BottomNavigation from '../BottomNavigation/BottomNavigation';
@@ -27,10 +29,12 @@ export const TradingPage: FC = () => {
         setActiveTrades,
         chartViewport,
         activeTrades,
-        promoModalShown
+        promoModalShown,
+        showTradesPanel
     } = useTradingStore();
 
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const previousPairRef = useRef<string>(selectedPair);
 
     // Get current pair config
     const currentPair = currencyPairs[selectedPair];
@@ -90,30 +94,56 @@ export const TradingPage: FC = () => {
     }, [currentPair.volatility, selectedPair]);
 
 
-    // Force data initialization on client mount
-    useEffect(() => {
-        if (!isInitialized && (!Array.isArray(candlestickData) || candlestickData.length === 0)) {
-            const initialData = [];
-            let baseRate = currentPair.baseRate;
-            setCurrentRate(baseRate);
+    // Мемоизируем генерацию начальных данных для предотвращения лишних вычислений
+    const generateInitialData = useCallback((pair: typeof currentPair, baseRate: number) => {
+        const initialData = [];
+        let currentBaseRate = baseRate;
 
-            for (let i = 0; i < 100; i++) {
-                const now = new Date(Date.now() - (100 - i) * 1000);
-                const timestamp = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
-                const candle = generateCandlestick(baseRate, timestamp, now.getTime());
-                initialData.push(candle);
-                baseRate = candle.close;
-            }
-
-            setCandlestickData(initialData);
-            setCurrentRate(baseRate);
-            setIsInitialized(true);
+        for (let i = 0; i < 100; i++) {
+            const now = new Date(Date.now() - (100 - i) * 1000);
+            const timestamp = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
+            const candle = generateCandlestick(currentBaseRate, timestamp, now.getTime());
+            initialData.push(candle);
+            currentBaseRate = candle.close;
         }
-    }, [isInitialized, selectedPair]);
 
-    // Fetch real forex data тільки при зміні пари валют
+        return { initialData, finalRate: currentBaseRate };
+    }, [generateCandlestick]);
+
+    // Initialize data when pair changes or on first mount
     useEffect(() => {
-        if (isInitialized && currentPair.apiBase && currentPair.apiTarget) {
+        if (!currentPair) return;
+        
+        // Проверяем, действительно ли изменилась пара
+        const pairChanged = previousPairRef.current !== selectedPair;
+        previousPairRef.current = selectedPair;
+        
+        if (!pairChanged && isInitialized) {
+            return; // Пара не изменилась, ничего не делаем
+        }
+        
+        // Останавливаем предыдущий интервал если есть
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+        
+        // Генерируем новые данные
+        const { initialData, finalRate } = generateInitialData(currentPair, currentPair.baseRate);
+        
+        // Используем flushSync для синхронного обновления всех состояний СРАЗУ
+        flushSync(() => {
+            // Фильтруем активные трейды для новой пары
+            (setActiveTrades as any)((prev: Trade[]) => prev.filter((trade: Trade) => trade.pair !== selectedPair));
+            
+            // Обновляем все состояние одновременно и синхронно
+            setCurrentRate(finalRate);
+            setCandlestickData(initialData);
+            setIsInitialized(true);
+        });
+        
+        // Fetch real forex data после инициализации данных (асинхронно)
+        if (currentPair.apiBase && currentPair.apiTarget) {
             const fetchRealRate = async () => {
                 try {
                     const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${currentPair.apiBase}`);
@@ -131,32 +161,17 @@ export const TradingPage: FC = () => {
 
             fetchRealRate();
         }
-    }, [selectedPair, isInitialized]);
-
-    // Initialize data when pair changes
-    useEffect(() => {
-        setIsInitialized(false);
-        const initialData = [];
-        let baseRate = currentPair.baseRate;
-        setCurrentRate(baseRate);
-
-        for (let i = 0; i < 100; i++) {
-            const now = new Date(Date.now() - (100 - i) * 1000);
-            const timestamp = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
-            const candle = generateCandlestick(baseRate, timestamp, now.getTime());
-            initialData.push(candle);
-            baseRate = candle.close;
-        }
-
-        setCandlestickData(initialData);
-        setCurrentRate(baseRate);
-        (setActiveTrades as any)((prev: Trade[]) => prev.filter((trade: Trade) => trade.pair !== selectedPair));
-        setIsInitialized(true);
-    }, [selectedPair, currentPair.baseRate, generateCandlestick, setCurrentRate, setCandlestickData, setActiveTrades]);
+    }, [selectedPair, currentPair?.baseRate, generateInitialData, setCurrentRate, setCandlestickData, setActiveTrades]);
 
     // Set up real-time updates - синтетичні дані з оновленням курсу
     useEffect(() => {
-        if (isLive && isInitialized) {
+        // Очищаем предыдущий интервал при смене пары
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+        
+        if (isLive && isInitialized && currentPair) {
             // Задержка перед запуском обновлений, чтобы дать время инициализации
             const timeoutId = setTimeout(() => {
                 // Використовуємо тільки синтетичні дані для імітації
@@ -234,7 +249,7 @@ export const TradingPage: FC = () => {
                         <div className="wrapper-inner">
                             <div className="chart">
                                 <div className="chart-header">
-                                    <ChartType />
+                                    <AssetSelector />
                                 </div>
                                 <div className="chart-main">
                                     <TradingChart />
@@ -245,6 +260,7 @@ export const TradingPage: FC = () => {
                 </div>
                 <div className="trading-side-panel-wrapper">
                     <TradingSidePanel />
+                    {showTradesPanel && <Trades />}
                 </div>
                 <RightSidebar />
             </div>

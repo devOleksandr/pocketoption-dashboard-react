@@ -6,8 +6,10 @@ export { default as RightSidebar } from './RightSidebar/RightSidebar';
 // Trading components
 export { Balance } from './Balance/Balance';
 export { ChartType } from './ChartType/ChartType';
+export { AssetSelector } from './AssetSelector/AssetSelector';
 export { TradingChart } from './TradingChart/TradingChart';
 export { TradingSidePanel } from './TradingSidePanel/TradingSidePanel';
+export { Trades } from './Trades/Trades';
 export { TimeframeModal } from './TimeframeModal/TimeframeModal';
 export { DesktopTimeframeSelector } from './DesktopTimeframeSelector/DesktopTimeframeSelector';
 export { TradeTimersBar } from './TradeTimersBar/TradeTimersBar';

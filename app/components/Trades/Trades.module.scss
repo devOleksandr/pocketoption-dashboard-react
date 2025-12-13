@@ -1,0 +1,339 @@
+.widgetSlot {
+    width: 330px;
+    height: calc(100vh - 60px);
+    max-height: calc(100vh - 60px);
+    background: #23283b;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-left: 1px solid #2d2d44;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: auto;
+        max-height: none;
+        border-left: none;
+        border-top: 1px solid #2d2d44;
+        border-radius: 0 0 12px 12px;
+    }
+}
+
+.header {
+    padding-top: 16px;
+    
+    border-bottom: 1px solid #2d2d44;
+    flex-shrink: 0;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+
+    span {
+        color: #f8f8fb;
+        font-size: 16px;
+        font-weight: 600;
+    }
+}
+
+.divider {
+    border-top: 1px solid #2d2d44;
+    padding-top: 0;
+}
+
+.tabList {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+}
+
+.tabList li {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.tabLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    color: #8ea5c0;
+    background-color: #272b3c;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    border-bottom: 2px solid transparent;
+    width: 100%;
+    box-sizing: border-box;
+    
+    height: 34px;
+
+    &:hover {
+        color: #fff;
+    }
+}
+
+.tabList li.active .tabLink {
+    color: #fff !important;
+    background-color: #1e2131 !important;
+    border-bottom-color: #009af9 !important;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+}
+
+
+.body {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.scrollbarContainer {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+    
+    // Custom scrollbar styling
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #1f2334;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #3b82f6;
+        border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: #2563eb;
+    }
+}
+
+.dateGroup {
+    margin-bottom: 0;
+}
+
+.dateLabel {
+    padding: 8px 16px;
+    color: #8ea5c0;
+    background: #2c3042;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    border-bottom: 1px solid #2d2d44;
+    // margin-bottom: 8px;
+}
+
+.dealsListItem {
+    padding: 12px 16px;
+    border-bottom: 1px solid #2d2d44;
+    transition: background-color 0.2s ease;
+    font-family: "Noto Sans", Arial, sans-serif;
+    font-size: 13px;
+
+    &:hover {
+        background-color: rgba(59, 130, 246, 0.05) !important;
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    * {
+        font-family: "Noto Sans", Arial, sans-serif;
+        font-size: 13px;
+    }
+}
+
+.dealsListItemOdd {
+    background-color: #1f2334;
+}
+
+.dealsListItemEven {
+    background-color: #23283b;
+}
+
+.dealsListItemFirst {
+    width: 100%;
+}
+
+.dealsListItemShort {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.itemRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    font-family: "Noto Sans", Arial, sans-serif;
+    color: #f8f8fb;
+
+    > div:first-child {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex: 1;
+        font-family: "Noto Sans", Arial, sans-serif;
+        font-size: 13px;
+    }
+
+    > div:last-child {
+        color: #8b8b9a;
+        font-size: 13px;
+        font-family: "Noto Sans", Arial, sans-serif;
+    }
+}
+
+.timer {
+    color: #fff !important;
+    font-weight: 500;
+}
+
+.doubleUpButton {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.btnDoubleUp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 10px 16px;
+    background-color: #172832;
+    border: 1px solid #025b44;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: "Noto Sans", Arial, sans-serif;
+    border-radius: 4px;
+    cursor: default;
+    pointer-events: none;
+    user-select: none;
+
+    i {
+        font-size: 18px;
+        color: #fff;
+    }
+
+    &:hover {
+        background-color: #1a2f3a;
+    }
+}
+
+.favorites {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ff9706 !important;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #ffb340 !important;
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: inherit !important;
+    }
+}
+
+.starIcon {
+    font-size: 14px;
+    color: #ff9706 !important;
+}
+
+.arrowUp {
+    color: #49a744 !important;
+    transform: rotate(45deg) !important;
+    display: inline-block;
+}
+
+.arrowDown {
+    color: #fc380a !important;
+    transform: rotate(-45deg) !important;
+    display: inline-block;
+}
+
+.priceUp {
+    color: rgb(111, 194, 116) !important;
+}
+
+.centered {
+    text-align: center;
+    flex: 1;
+}
+
+.itemRow > div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    a {
+        color: #8ea5c0;
+        text-decoration: none;
+    }
+}
+
+
+.noDeals {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+    color: #8b8b9a;
+    font-size: 14px;
+    text-align: center;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .header {
+        padding: 12px;
+    }
+
+    .title span {
+        font-size: 14px;
+    }
+
+    .tabLink {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .dealsListItem {
+        padding: 10px 12px;
+    }
+
+    .itemRow {
+        font-size: 11px;
+    }
+}
+

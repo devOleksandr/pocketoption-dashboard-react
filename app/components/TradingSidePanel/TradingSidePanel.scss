@@ -6,7 +6,8 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 60px);
+    height: calc(100vh - 60px);
+    max-height: calc(100vh - 60px);
 
     // Responsive breakpoints
     @media (max-width: 1200px) {
@@ -402,8 +403,13 @@
 .trading-side-panel-wrapper {
     // Desktop layout: positioned as flex item in wrapper__bottom
     @media (min-width: 769px) {
-        display: block;
+        display: flex;
+        flex-direction: row;
         flex-shrink: 0;
+        align-items: stretch;
+        height: calc(100vh - 60px);
+        max-height: calc(100vh - 60px);
+        overflow: hidden;
     }
     
     // Mobile layout: positioned absolutely at bottom
@@ -418,14 +424,21 @@
         border-radius: 12px 12px 0 0;
         margin: 0 8px;
         box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        flex-direction: column;
         
         .trading-side-panel {
             width: 100%;
             min-height: auto;
             border: none;
-            border-radius: 12px 12px 0 0;
+            border-radius: 0;
             padding: 16px;
             margin: 0;
+            border-bottom: 1px solid #2d2d44;
+            
+            &:last-of-type {
+                border-bottom: none;
+                border-radius: 0 0 12px 12px;
+            }
             
             &__content {
                 flex-direction: column;
