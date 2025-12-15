@@ -1,0 +1,148 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modalContent {
+    background: #1d2130;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 500px;
+    width: 90%;
+    color: #fff;
+    animation: slideUp 0.3s ease;
+    border: 1px solid #454a56;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modalTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.closeButton {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8ea5c0;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: #fff;
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.modalBody {
+    margin-bottom: 24px;
+}
+
+.message {
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: rgba(70, 180, 84, 0.1);
+    border-radius: 4px;
+    border: 1px solid rgba(70, 180, 84, 0.3);
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detailItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+}
+
+.detailLabel {
+    font-size: 14px;
+    color: #8ea5c0;
+}
+
+.detailValue {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: center;
+}
+
+.okButton {
+    padding: 10px 24px;
+    background: #009af9;
+    color: #fff;
+    border: 1px solid #009af9;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #0088e6;
+        border-color: #0088e6;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+

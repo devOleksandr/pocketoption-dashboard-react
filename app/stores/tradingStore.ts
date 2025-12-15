@@ -48,6 +48,19 @@ export interface TradeResult {
     profit: number;
 }
 
+export interface Transaction {
+    id: string;
+    date: string; // формат: "2025-04-06 19:58:05"
+    amount: number;
+    method: string; // например, "Tron (TRX)"
+    type: 'deposit' | 'withdrawal' | 'internal_transfer';
+    status: 'completed' | 'pending' | 'failed';
+    bonusAmount: number;
+    paymentAmount?: string; // для расширенной информации
+    accountDetails?: string; // для расширенной информации
+    comment?: string; // для расширенной информации
+}
+
 export interface ChartViewport {
     offset: number; // Скільки свічок прокручено назад від кінця
     isLocked: boolean; // Чи заблокований auto-scroll
@@ -183,6 +196,16 @@ export interface TradingState {
     // Trades menu visibility
     showTradesMenu: boolean;
     setShowTradesMenu: (show: boolean) => void;
+
+    // Transactions (Balance History)
+    transactions: Transaction[];
+    setTransactions: (transactions: Transaction[]) => void;
+    addTransaction: (transaction: Transaction) => void;
+    processWithdrawal: (amount: number, method: string, address: string) => Transaction | null;
+    updateTransactionStatus: (id: string, status: 'completed' | 'failed') => void;
+    generateWithdrawalId: () => string;
+    pendingWithdrawalTimers: Map<string, NodeJS.Timeout>;
+    setPendingWithdrawalTimers: (timers: Map<string, NodeJS.Timeout>) => void;
 
 }
 
@@ -806,6 +829,124 @@ export const useTradingStore = create<TradingState>()(
             showTradesMenu: false,
             setShowTradesMenu: (show: boolean) => set({ showTradesMenu: show }),
 
+            // Transactions (Balance History)
+            transactions: [
+                {
+                    id: '70049827',
+                    date: '2025-04-06 19:58:05',
+                    amount: 19.90,
+                    method: 'Tron (TRX)',
+                    type: 'deposit',
+                    status: 'completed',
+                    bonusAmount: 0,
+                    paymentAmount: '83.33 TRX',
+                    accountDetails: 'TBRXES3WLSsSaPJcB8xHPdtXgLD98UQ7EM',
+                    comment: 'Payment is successfully processed and transferred to the trading account balance.'
+                }
+            ] as Transaction[],
+            setTransactions: (transactions: Transaction[]) => set({ transactions }),
+            addTransaction: (transaction: Transaction) => set((state) => ({
+                transactions: [transaction, ...state.transactions]
+            })),
+            pendingWithdrawalTimers: new Map(),
+            setPendingWithdrawalTimers: (timers: Map<string, NodeJS.Timeout>) => set({ pendingWithdrawalTimers: timers }),
+            generateWithdrawalId: () => {
+                const state = get();
+                const transactions = state.transactions;
+
+                if (transactions.length === 0) {
+                    return '70049862';
+                }
+
+                // Найти максимальный числовой ID
+                let maxId = 0;
+                transactions.forEach(t => {
+                    const numericId = parseInt(t.id, 10);
+                    if (!isNaN(numericId) && numericId > maxId) {
+                        maxId = numericId;
+                    }
+                });
+
+                // Добавить случайное число от 35 до 60
+                const randomIncrement = Math.floor(Math.random() * (60 - 35 + 1)) + 35;
+                const newId = maxId + randomIncrement;
+
+                return newId.toString();
+            },
+            processWithdrawal: (amount: number, method: string, address: string) => {
+                const state = get();
+                const { balance, generateWithdrawalId, addTransaction, addToBalance, updateTransactionStatus, pendingWithdrawalTimers } = state;
+
+                // Валидация суммы
+                if (amount < 10) {
+                    return null; // Минимум 10 USD
+                }
+
+                if (amount > balance) {
+                    return null; // Недостаточно средств
+                }
+
+                // Генерация ID и даты
+                const id = generateWithdrawalId();
+                const now = new Date();
+                const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+
+                // Создание транзакции
+                const transaction: Transaction = {
+                    id,
+                    date,
+                    amount,
+                    method,
+                    type: 'withdrawal',
+                    status: 'pending',
+                    bonusAmount: 0,
+                    accountDetails: address,
+                    comment: 'Withdrawal request is being processed.'
+                };
+
+                // Уменьшение баланса
+                addToBalance(-amount);
+
+                // Добавление транзакции
+                addTransaction(transaction);
+
+                // Запуск таймера для изменения статуса через 4-5 минут
+                const delayMinutes = 4 + Math.random(); // 4-5 минут
+                const delayMs = delayMinutes * 60 * 1000;
+
+                const timer = setTimeout(() => {
+                    updateTransactionStatus(id, 'completed');
+                    const timers = get().pendingWithdrawalTimers;
+                    timers.delete(id);
+                    set({ pendingWithdrawalTimers: new Map(timers) });
+                }, delayMs);
+
+                // Сохранение таймера
+                const timers = new Map(pendingWithdrawalTimers);
+                timers.set(id, timer);
+                set({ pendingWithdrawalTimers: timers });
+
+                return transaction;
+            },
+            updateTransactionStatus: (id: string, status: 'completed' | 'failed') => {
+                set((state) => {
+                    const updatedTransactions = state.transactions.map(t => {
+                        if (t.id === id) {
+                            return {
+                                ...t,
+                                status,
+                                comment: status === 'completed'
+                                    ? 'Withdrawal has been successfully processed and transferred to your account.'
+                                    : 'Withdrawal request failed.'
+                            };
+                        }
+                        return t;
+                    });
+
+                    return { transactions: updatedTransactions };
+                });
+            },
+
             // Trading actions
             handleTrade: (direction: 'up' | 'down') => {
                 const state = get();
@@ -976,6 +1117,7 @@ export const useTradingStore = create<TradingState>()(
                 tradeHistory: state.tradeHistory,
                 completedTradesCount: state.completedTradesCount,
                 promoModalShown: state.promoModalShown,
+                transactions: state.transactions,
             }),
             merge: (persistedState: unknown, currentState: TradingState) => {
                 // Міграція: якщо баланс дорівнює 1000, встановлюємо на 43201
@@ -983,6 +1125,10 @@ export const useTradingStore = create<TradingState>()(
                 if (persisted?.balance === 1000) {
                     persisted.balance = 43201;
                 }
+
+                // Восстановление таймеров для pending транзакций будет происходить после инициализации store
+                // через useEffect в компоненте или отдельную функцию инициализации
+
                 return { ...currentState, ...persisted };
             },
         }

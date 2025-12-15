@@ -18,3 +18,5 @@ export { InsufficientFundsModal } from './InsufficientFundsModal/InsufficientFun
 export { RegistrationPromoModal } from './RegistrationPromoModal/RegistrationPromoModal';
 export { WelcomeBonusModal } from './WelcomeBonusModal/WelcomeBonusModal';
 export { TradingPage } from './TradingPage/TradingPage';
+export { default as Layout } from './Layout/Layout';
+export { default as WithdrawalModal } from './WithdrawalModal/WithdrawalModal';

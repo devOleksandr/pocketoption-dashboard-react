@@ -17,12 +17,18 @@ type Pages = {
   "/trading": {
     params: {};
   };
+  "/cabinet/withdrawal": {
+    params: {};
+  };
+  "/cabinet/balance-history": {
+    params: {};
+  };
 };
 
 type RouteFiles = {
   "root.tsx": {
     id: "root";
-    page: "/" | "/trading";
+    page: "/" | "/trading" | "/cabinet/withdrawal" | "/cabinet/balance-history";
   };
   "routes/home.tsx": {
     id: "routes/home";
@@ -32,10 +38,20 @@ type RouteFiles = {
     id: "routes/trading";
     page: "/trading";
   };
+  "routes/withdrawal.tsx": {
+    id: "routes/withdrawal";
+    page: "/cabinet/withdrawal";
+  };
+  "routes/balance-history.tsx": {
+    id: "routes/balance-history";
+    page: "/cabinet/balance-history";
+  };
 };
 
 type RouteModules = {
   "root": typeof import("./app/root.tsx");
   "routes/home": typeof import("./app/routes/home.tsx");
   "routes/trading": typeof import("./app/routes/trading.tsx");
+  "routes/withdrawal": typeof import("./app/routes/withdrawal.tsx");
+  "routes/balance-history": typeof import("./app/routes/balance-history.tsx");
 };
