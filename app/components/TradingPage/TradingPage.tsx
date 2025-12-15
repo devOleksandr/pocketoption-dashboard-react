@@ -7,10 +7,11 @@ import RightSidebar from '../RightSidebar/RightSidebar';
 import { AssetSelector } from '../AssetSelector/AssetSelector';
 import { TradingChart } from '../TradingChart/TradingChart';
 import { TradingSidePanel } from '../TradingSidePanel/TradingSidePanel';
-import { Trades } from '../Trades/Trades';
 import { TradeTimersBar } from '../TradeTimersBar/TradeTimersBar';
 import { InsufficientFundsModal } from '../InsufficientFundsModal/InsufficientFundsModal';
 import BottomNavigation from '../BottomNavigation/BottomNavigation';
+import FinanceMenu from '../FinanceMenu/FinanceMenu';
+import { Trades } from '../Trades/Trades';
 import { type Direction } from '~/utils/scenarioManager';
 
 export const TradingPage: FC = () => {
@@ -30,7 +31,8 @@ export const TradingPage: FC = () => {
         chartViewport,
         activeTrades,
         promoModalShown,
-        showTradesPanel
+        showTradesPanel,
+        showFinanceMenu
     } = useTradingStore();
 
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -262,6 +264,7 @@ export const TradingPage: FC = () => {
                     <TradingSidePanel />
                     {showTradesPanel && <Trades />}
                 </div>
+                {showFinanceMenu && <FinanceMenu />}
                 <RightSidebar />
             </div>
 

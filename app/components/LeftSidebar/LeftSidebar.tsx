@@ -1,16 +1,23 @@
 import { type FC } from 'react';
+import { useTradingStore } from '~/stores';
 import SidebarItem from '../SidebarItem/SidebarItem';
 
 const LeftSidebar: FC = () => {
     const link = import.meta.env.VITE_LINK || "https://pocketoption.com/en/cabinet/";
+    const { showFinanceMenu, setShowFinanceMenu } = useTradingStore();
 
     const createFaIcon = (className: string, color?: string) => (
         <i className={className} style={color ? { color } : undefined} aria-hidden="true"></i>
     );
 
+    const handleFinanceClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        setShowFinanceMenu(!showFinanceMenu);
+    };
+
     const navItems = [
         { text: 'Trading', icon: 'fa fa-line-chart', isActive: true },
-        { text: 'Finance', icon: 'fa fa-dollar' },
+        { text: 'Finance', icon: 'fa fa-dollar', onClick: handleFinanceClick },
         { text: 'Profile', icon: 'fa fa-user' },
         { text: 'Market', icon: '/assets/images/newPictures/market.svg' },
         { text: 'Achievements', icon: createFaIcon('fa fa-diamond', '#ffffff'), badge: { variant: 'bell' as const } },
@@ -35,8 +42,9 @@ const LeftSidebar: FC = () => {
                                 href={link}
                                 icon={item.icon}
                                 text={item.text}
-                                isActive={item.isActive}
+                                isActive={item.isActive || (item.text === 'Finance' && showFinanceMenu)}
                                 badge={item.badge}
+                                onClick={item.onClick}
                             />
                         ))}
                     </ul>

@@ -176,6 +176,14 @@ export interface TradingState {
     showTradesPanel: boolean;
     setShowTradesPanel: (show: boolean) => void;
 
+    // Finance menu visibility
+    showFinanceMenu: boolean;
+    setShowFinanceMenu: (show: boolean) => void;
+
+    // Trades menu visibility
+    showTradesMenu: boolean;
+    setShowTradesMenu: (show: boolean) => void;
+
 }
 
 export const CURRENCY_PAIRS: Record<string, CurrencyPair> = {
@@ -789,6 +797,14 @@ export const useTradingStore = create<TradingState>()(
             // Trades panel visibility
             showTradesPanel: false,
             setShowTradesPanel: (show: boolean) => set({ showTradesPanel: show }),
+
+            // Finance menu visibility
+            showFinanceMenu: false,
+            setShowFinanceMenu: (show: boolean) => set({ showFinanceMenu: show }),
+
+            // Trades menu visibility
+            showTradesMenu: false,
+            setShowTradesMenu: (show: boolean) => set({ showTradesMenu: show }),
 
             // Trading actions
             handleTrade: (direction: 'up' | 'down') => {
