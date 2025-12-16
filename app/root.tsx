@@ -31,6 +31,11 @@ export const links: Route.LinksFunction = () => [
         rel: "stylesheet",
         href: "/css/font-awesome.min.css",
     },
+    // Font Awesome fix
+    {
+        rel: "stylesheet",
+        href: "/css/font-awesome-fix.css",
+    },
     // Vendor CSS files
     {
         rel: "stylesheet",

@@ -25,5 +25,7 @@ export default defineConfig({
     sourcemap: false,
     cssCodeSplit: true,
   },
+  publicDir: 'public',
+  assetsInclude: ['**/*.woff', '**/*.woff2', '**/*.ttf', '**/*.eot'],
   // Environment variables з VITE_ префіксом автоматично доступні
 });
