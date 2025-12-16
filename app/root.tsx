@@ -26,19 +26,10 @@ export const links: Route.LinksFunction = () => [
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap",
     },
-    // Font Awesome - preconnect для ускорения загрузки
-    { rel: "preconnect", href: "https://cdnjs.cloudflare.com" },
-    { rel: "dns-prefetch", href: "https://cdnjs.cloudflare.com" },
-    { rel: "preconnect", href: "https://cdn.jsdelivr.net" },
-    { rel: "dns-prefetch", href: "https://cdn.jsdelivr.net" },
-    { rel: "preconnect", href: "https://maxcdn.bootstrapcdn.com" },
-    { rel: "dns-prefetch", href: "https://maxcdn.bootstrapcdn.com" },
-    // Font Awesome 4.7.0 - основной CDN
+    // Font Awesome 4.7.0 - локальная версия для надежности
     {
         rel: "stylesheet",
-        href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
-        integrity: "sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==",
-        crossOrigin: "anonymous",
+        href: "/css/font-awesome.min.css",
     },
     // Vendor CSS files
     {
@@ -120,51 +111,6 @@ export default function Root() {
         e.preventDefault();
       }
     }, { passive: false });
-    
-    // Font Awesome fallback - проверяем загрузку и загружаем альтернативные CDN
-    (function checkFontAwesome() {
-      const testIcon = document.createElement('i');
-      testIcon.className = 'fa fa-star-o';
-      testIcon.style.position = 'absolute';
-      testIcon.style.visibility = 'hidden';
-      testIcon.style.fontSize = '14px';
-      document.body.appendChild(testIcon);
-      
-      setTimeout(() => {
-        const computedStyle = window.getComputedStyle(testIcon, ':before');
-        const fontFamily = computedStyle.getPropertyValue('font-family');
-        const content = computedStyle.getPropertyValue('content');
-        document.body.removeChild(testIcon);
-        
-        // Если Font Awesome не загрузился (нет FontAwesome в font-family или content пустой)
-        if (!fontFamily || (!fontFamily.includes('FontAwesome') && !fontFamily.includes('Font Awesome')) || content === 'none' || content === '""') {
-          // Пробуем загрузить с альтернативных CDN
-          const cdnUrls = [
-            'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-            'https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css'
-          ];
-          
-          let loaded = false;
-          cdnUrls.forEach((url, index) => {
-            if (!loaded) {
-              const link = document.createElement('link');
-              link.rel = 'stylesheet';
-              link.href = url;
-              link.crossOrigin = 'anonymous';
-              link.onload = function() {
-                loaded = true;
-              };
-              link.onerror = function() {
-                if (index === cdnUrls.length - 1) {
-                  console.warn('Font Awesome failed to load from all CDN sources');
-                }
-              };
-              document.head.appendChild(link);
-            }
-          });
-        }
-      }, 1000);
-    })();
   } catch {}
 })();`
                     }}

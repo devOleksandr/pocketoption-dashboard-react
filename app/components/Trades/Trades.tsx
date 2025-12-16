@@ -99,7 +99,7 @@ export const Trades: FC = () => {
                             <div>
                                 <span className={styles.favorites}>
                                     <a>
-                                        <i className={`fa fa-star-o ${styles.starIcon}`} aria-hidden="true"></i>
+                                        <i className="fa fa-star-o"></i>
                                     </a>
                                 </span>
                                 <a>{trade.pair} OTC</a>
@@ -109,7 +109,7 @@ export const Trades: FC = () => {
                         </div>
                         <div className={styles.itemRow}>
                             <div>
-                                <i className={`fa fa-arrow-${isBuy ? 'up' : 'down'} ${isBuy ? styles.arrowUp : styles.arrowDown}`} aria-hidden="true"></i>
+                                <i className={`fa ${isBuy ? 'fa-arrow-up' : 'fa-arrow-down'} ${isBuy ? styles.arrowUp : styles.arrowDown}`}></i>
                                 ${Number(trade.amount).toFixed(2)}
                             </div>
                             <div className={`${styles.centered} ${isWin ? styles.priceUp : ''}`}>
@@ -121,10 +121,8 @@ export const Trades: FC = () => {
                         </div>
                         {trade.status === 'active' && (
                             <div className={styles.doubleUpButton}>
-                                <a className={styles.btnDoubleUp}>
-                                    <i className="fa fa-angle-double-up" aria-hidden="true"></i>
-                                    Double Up
-                                </a>
+                                <i className="fa fa-angle-double-up"></i>
+                                Double Up
                             </div>
                         )}
                     </div>

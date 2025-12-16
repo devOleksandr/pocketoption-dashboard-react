@@ -179,6 +179,7 @@
     display: flex;
     flex-direction: column;
     gap: 0px;
+    position: relative;
 }
 
 .itemRow {
@@ -211,21 +212,16 @@
 }
 
 .doubleUpButton {
-    margin-top: 8px;
-    width: 100%;
-}
-
-.btnDoubleUp {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
     width: 100%;
     padding: 10px 16px;
-    background-color: #172832;
+    margin-top: 8px;
+    background: linear-gradient(180deg, #1a2f3a 0%, #152329 100%);
     border: 1px solid #025b44;
     color: #fff;
-    text-decoration: none;
     font-size: 13px;
     font-weight: 500;
     font-family: "Noto Sans", Arial, sans-serif;
@@ -235,7 +231,7 @@
     user-select: none;
 
     i {
-        font-size: 18px;
+        font-size: 16px;
         color: #fff;
     }
 
@@ -263,23 +259,25 @@
         text-decoration: none;
         color: inherit !important;
     }
-}
 
-.starIcon {
-    font-size: 14px;
-    color: #ff9706 !important;
+    i {
+        font-size: 14px;
+        color: inherit !important;
+    }
 }
 
 .arrowUp {
     color: #49a744 !important;
-    transform: rotate(45deg) !important;
-    display: inline-block;
+    margin-right: 6px;
+    font-size: 14px;
+    transform: rotate(45deg);
 }
 
 .arrowDown {
     color: #fc380a !important;
-    transform: rotate(-45deg) !important;
-    display: inline-block;
+    margin-right: 6px;
+    font-size: 14px;
+    transform: rotate(-45deg);
 }
 
 .priceUp {
