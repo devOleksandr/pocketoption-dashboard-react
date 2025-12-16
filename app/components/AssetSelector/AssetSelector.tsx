@@ -39,6 +39,13 @@ export const AssetSelector: FC = () => {
         }
     }, [showPairDropdown, setShowPairDropdown]);
 
+    // Всегда возвращаем активную категорию к currencies при открытии
+    useEffect(() => {
+        if (showPairDropdown) {
+            setActiveCategory('currencies');
+        }
+    }, [showPairDropdown]);
+
     // Позиционирование дропдауна
     useEffect(() => {
         if (showPairDropdown && triggerRef.current && dropdownRef.current) {
@@ -259,7 +266,7 @@ export const AssetSelector: FC = () => {
                                             className={`${styles.assetsBlockNavItem} ${styles.assetsBlockNavItemCommodity} ${activeCategory === 'commodities' ? styles.assetsBlockNavItemActive : ''}`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                setActiveCategory('commodities');
+                                                // Отключено — ничего не происходит
                                             }}
                                         >
                                             <span className={styles.assetsBlockNavIconWrap}>
@@ -271,7 +278,7 @@ export const AssetSelector: FC = () => {
                                             className={`${styles.assetsBlockNavItem} ${styles.assetsBlockNavItemStock} ${activeCategory === 'stocks' ? styles.assetsBlockNavItemActive : ''}`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                setActiveCategory('stocks');
+                                                // Отключено - ничего не происходит
                                             }}
                                         >
                                             <span className={styles.assetsBlockNavIconWrap}>
@@ -283,7 +290,7 @@ export const AssetSelector: FC = () => {
                                             className={`${styles.assetsBlockNavItem} ${styles.assetsBlockNavItemIndex} ${activeCategory === 'indices' ? styles.assetsBlockNavItemActive : ''}`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                setActiveCategory('indices');
+                                                // Отключено - ничего не происходит
                                             }}
                                         >
                                             <span className={styles.assetsBlockNavIconWrap}>
@@ -297,7 +304,7 @@ export const AssetSelector: FC = () => {
                                             className={`${styles.assetsBlockNavItem} ${styles.assetsBlockNavItemFavorites} ${activeCategory === 'favorites' ? styles.assetsBlockNavItemActive : ''}`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                setActiveCategory('favorites');
+                                                // Отключено - ничего не происходит
                                             }}
                                         >
                                             <span className={styles.assetsBlockNavIconWrap}>
@@ -311,7 +318,7 @@ export const AssetSelector: FC = () => {
                                             className={`${styles.assetsBlockNavItem} ${styles.assetsBlockNavItemCalendar} ${activeCategory === 'schedule' ? styles.assetsBlockNavItemActive : ''}`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                setActiveCategory('schedule');
+                                                // Отключено - ничего не происходит
                                             }}
                                         >
                                             <span className={styles.assetsBlockNavIconWrap}>

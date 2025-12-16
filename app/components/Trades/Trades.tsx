@@ -84,11 +84,11 @@ export const Trades: FC = () => {
         const payoutPercentage = getPayoutPercentage(trade);
         const isBuy = trade.type === 'buy';
         const isWin = trade.status === 'closed' && trade.profit !== undefined && trade.profit > 0;
-        const time = trade.status === 'closed' && trade.exitTime 
-            ? formatTime(trade.exitTime) 
+        const time = trade.status === 'closed' && trade.exitTime
+            ? formatTime(trade.exitTime)
             : trade.status === 'active'
-            ? getRemainingTime(trade)
-            : formatTime(trade.entryTime);
+                ? getRemainingTime(trade)
+                : formatTime(trade.entryTime);
 
         const itemIndex = globalIndex !== undefined ? globalIndex : index;
         return (
@@ -175,7 +175,7 @@ export const Trades: FC = () => {
                 <div className={styles.divider}>
                     <ul className={styles.tabList}>
                         <li className={activeTab === 'opened' ? styles.active : ''}>
-                            <a 
+                            <a
                                 className={styles.tabLink}
                                 onClick={(e) => {
                                     e.preventDefault();
@@ -186,7 +186,7 @@ export const Trades: FC = () => {
                             </a>
                         </li>
                         <li className={activeTab === 'closed' ? styles.active : ''}>
-                            <a 
+                            <a
                                 className={styles.tabLink}
                                 onClick={(e) => {
                                     e.preventDefault();

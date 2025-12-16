@@ -21,5 +21,9 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    sourcemap: false,
+    cssCodeSplit: true,
+  },
   // Environment variables з VITE_ префіксом автоматично доступні
 });

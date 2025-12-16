@@ -40,7 +40,7 @@ export const WithdrawalModal: FC<WithdrawalModalProps> = ({ isOpen, onClose, amo
                 </div>
                 <div className={styles.modalBody}>
                     <div className={styles.message}>
-                        Ваш вывод в обработке
+                        Your withdrawal is being processed
                     </div>
                     <div className={styles.details}>
                         <div className={styles.detailItem}>

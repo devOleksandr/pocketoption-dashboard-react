@@ -26,14 +26,17 @@ export const links: Route.LinksFunction = () => [
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap",
     },
-    // Font Awesome
+    // Font Awesome - preconnect для ускорения загрузки
+    { rel: "preconnect", href: "https://cdnjs.cloudflare.com" },
+    { rel: "dns-prefetch", href: "https://cdnjs.cloudflare.com" },
+    { rel: "preconnect", href: "https://cdn.jsdelivr.net" },
+    { rel: "dns-prefetch", href: "https://cdn.jsdelivr.net" },
+    // Font Awesome 4.7.0 - используем jsDelivr как более надежный CDN
     {
         rel: "stylesheet",
-        href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
-    },
-    {
-        rel: "stylesheet",
-        href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
+        href: "https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css",
+        integrity: "sha512-SfTiTlX6kk+qitfevl/7LibUOeJWlt9rbyDn92a1DqWOw9vWG2MFoays0sgObmWazO5BQPiFucnnEAjpAB+/Sw==",
+        crossOrigin: "anonymous",
     },
     // Vendor CSS files
     {
@@ -115,6 +118,27 @@ export default function Root() {
         e.preventDefault();
       }
     }, { passive: false });
+    
+    // Font Awesome fallback - проверяем загрузку через 2 секунды
+    setTimeout(() => {
+      const testIcon = document.createElement('i');
+      testIcon.className = 'fa fa-star-o';
+      testIcon.style.position = 'absolute';
+      testIcon.style.visibility = 'hidden';
+      document.body.appendChild(testIcon);
+      const computedStyle = window.getComputedStyle(testIcon, ':before');
+      const fontFamily = computedStyle.getPropertyValue('font-family');
+      document.body.removeChild(testIcon);
+      
+      // Если Font Awesome не загрузился, загружаем альтернативный CDN
+      if (!fontFamily || !fontFamily.includes('FontAwesome')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
+        link.crossOrigin = 'anonymous';
+        document.head.appendChild(link);
+      }
+    }, 2000);
   } catch {}
 })();`
                     }}

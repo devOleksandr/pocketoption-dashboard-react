@@ -21,7 +21,7 @@ const RightSidebar: FC = () => {
                     <ul className="main-nav__list">
                         <SidebarItem
                             href={link}
-                            icon="fas fa-history"
+                            icon="fa fa-history"
                             text="Trades"
                             isActive={showTradesPanel}
                             onClick={handleTradesClick}
@@ -29,27 +29,27 @@ const RightSidebar: FC = () => {
                         />
                         <SidebarItem
                             href={link}
-                            icon="fas fa-broadcast-tower"
+                            icon="fa fa-signal"
                             text="Signals"
                         />
                         <SidebarItem
                             href={link}
-                            icon="fas fa-users"
+                            icon="fa fa-users"
                             text="Social Trading"
                         />
                         <SidebarItem
                             href={link}
-                            icon="fas fa-bullseye"
+                            icon="fa fa-bullseye"
                             text="Express Trades"
                         />
                         <SidebarItem
                             href={link}
-                            icon="fas fa-hourglass-half"
+                            icon="fa fa-hourglass-o"
                             text="Pending Trades"
                         />
                         <SidebarItem
                             href={link}
-                            icon="fas fa-keyboard"
+                            icon="fa fa-keyboard-o"
                             text="Hotkeys"
                         />
                     </ul>
@@ -59,12 +59,12 @@ const RightSidebar: FC = () => {
                     <ul className="main-nav__list main-nav__list--auth">
                         <SidebarItem
                             href={link}
-                            icon="fas fa-expand"
+                            icon="fa fa-expand"
                             text="Full screen"
                         />
                         <SidebarItem
                             href={link}
-                            icon="fas fa-arrow-left"
+                            icon="fa fa-arrow-left"
                             isBackArrow={true}
                         />
                     </ul>
